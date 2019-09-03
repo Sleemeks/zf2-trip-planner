@@ -1,0 +1,37 @@
+.last-spot {
+    padding: 5px 0 5px 25px;
+    font-size: 12px;
+    background: #f7b1b1;
+    color: #c13838;
+}
+.fa-ellipsis-h {
+    font-size: 25px;
+    line-height: 10px;
+    vertical-align: middle;
+}
+.spot-tooltip {
+    position: relative;
+    display: inline-block;
+}
+.spot-menu {
+    position: absolute;
+    min-width: 100px;
+    min-height: 50px;
+    background: #e0e0e0;
+    top: 20px;
+    z-index: 1;
+}
+.spot-menu a {
+    display: block;
+    padding: 3px;
+    font-size: 13px;
+    text-align: center;
+}
+.display-none {
+    display: none;
+}
+.day-container {
+    overflow-y: scroll;
+    /*max-height: 500px;*/
+    /*width: 515px;*/
+}

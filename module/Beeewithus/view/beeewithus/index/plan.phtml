@@ -1,0 +1,2397 @@
+<!-- <input type="radio" id="test-radio" />
+<script>
+$("input[type=radio]").switchButton({
+  labels_placement: "left"
+});
+</script> -->
+<div id="trip-planner-box">
+    <div class="start-end-box">
+        <button type="button" id="next-page" class="btn btn-xs btn-primary">Plan my amazing trip</button>
+    </div>
+</div>
+
+<div class="budget-totals-container">
+	<div class="budgets-list" style="display:none">
+		<div class="budget"></div>
+		<button style="" onclick="addBudget('', false, true)">Add Budget Type</button>
+	</div>
+	<div class=""><button class="budget-toggle" onclick="showGlobalTotals()"><i class="fa fa-caret-up" aria-hidden="true"></i></button></div>
+</div>
+
+<div id="spot-content" style="display:none;">
+    <div class="spot">
+        <input type="text" placeholder="Middle point" class="input-spot spot-place">
+        <input type="hidden" placeholder="spot" class="input-spot spot-place-lng">
+        <input type="hidden" placeholder="spot" class="input-spot spot-place-lat">
+        
+        <a href="#" class="comment-link spot-button"><i class="fa fa-comment" aria-hidden="true"></i></a>
+        <div style="display:none; background: white; z-index: 10; padding: 10px;">
+        	<textarea class="comment-value"></textarea>
+        </div>
+        <a href="" class=" spot-button" onclick="deleteSpot(this); return false;"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </p>
+    </div>
+</div>
+<div id="day-content" style="display: none;">
+    <div class="day template-holder">
+        <div class="day-head">
+        	<div class="day-title">Day <span class="day-index"></span></div>
+          	<i class="fa fa-calendar-alt" aria-hidden="true" title="Trip Start Date"></i><input class="datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy">
+
+
+            <a href="#" class="day-icons delete-day-icon" onclick="deleteDay(this); return false;"><i title="Delete Day" class="fa fa-times" aria-hidden="true"></i></a>
+
+            <span class="budget-popup-link day-icons"><i class="fa fa-credit-card" title="Day Budget" aria-hidden="true"></i></span>
+            <div class="budget-popup"></div>
+            <span class="show-day-map day-icons" onclick="showDayMap(this)"><i title="Show Day Route" class="fa fa-map" aria-hidden="true"></i></span>
+
+			<span class="day-icons" onclick="toggleDaySettings(this)">
+            	<i class="fa fa-sliders-h " title="Route Settings" aria-hidden="true"></i>
+            </span>
+
+            <div class="way-settings-block" style="display: none;">
+
+            	P<input type="checkbox" class="allow_pay_roads" onchange="changeRoadSettings(this, 'allow_pay_road')" value='1' />
+	            H<input type="checkbox" class="allow_highway" onchange="changeRoadSettings(this, 'allow_highway')" value='1' />
+	            B<input type="checkbox" class="use_bike" onchange="changeRoadSettings(this, 'use_bike')" value='1' />
+
+
+	      	</div>
+
+			<div class="day-start-finish-points-block">
+	            
+	            <input type="text" value="" class="day-title-start-value">
+	            <input type="hidden" value="" class="day-title-start-value-lat">
+	            <input type="hidden" value="" class="day-title-start-value-lng">
+				<br />
+	            <input type="text" value="" class="day-title-end-value">
+	            <input type="hidden" value="" class="day-title-end-value-lat">
+	            <input type="hidden" value="" class="day-title-end-value-lng">
+	            
+	            <textarea class="day-description"></textarea>
+	            
+            </div>
+            
+            <div class="day-route-calculations-block">
+ 				<i class="fa fa-play-circle" title="Start Time" aria-hidden="true"></i><input type="text" value="" placeholder="0:00" class="start-time"><span class="km-label">H:m</span><div>&nbsp;</div>
+ 				<i class="fa fa-stop-circle" title="Estimated End Time" aria-hidden="true"></i><input type="text" value="" placeholder="0:00" class="finish-time" readonly><span class="km-label">H:m</span><div>&nbsp;</div>
+ 				<i class="fa fa-stopwatch" title="Time on the road" aria-hidden="true"></i><input type="text" value="" placeholder="0:00" class="way-time"><span class="km-label">H:m</span><div>&nbsp;</div>
+ 				<i class="fa fa-map-signs" title="Total Duration" aria-hidden="true"></i><input type="text" value="" placeholder="0" class="way-distance" readonly><span class="km-label">km</span>
+ 				<input type="hidden" value="" class="finish_time_edited"><br />
+ 				<input type="hidden" value="" class="way_time_edited"><br />
+            </div>
+            
+        </div>
+        <!-- <div class="show-spots" onclick="showHideSpot(this)">show / hide spots</div> -->
+        <div class="spots-content">
+	        <div class="day-content">
+	            <div class="spot spot2">
+	                <input type="text" placeholder="Middle point" class="input-spot spot-place">
+	                <input type="hidden" placeholder="spot" class="input-spot spot-place-lng">
+	        		<input type="hidden" placeholder="spot" class="input-spot spot-place-lat">
+	        
+	                <a href="#" class="comment-link spot-button"><i class="fa fa-comment" aria-hidden="true"></i></a>
+	                <div style="display:none; background: white; z-index: 10; padding: 10px;">
+	                	<textarea class="comment-value"></textarea>
+	                </div>
+	                <a href="#" class=" spot-button" onclick="deleteSpot(this); return false;"><i class="fa fa-times" aria-hidden="true"></i></a>
+
+	          </div>
+	        </div>
+	        <div class="actions">
+	            <a href="#" onclick="addNewSpot(this); return false;" class="add-new-spot"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+	        </div>
+        </div>
+    </div>
+</div>
+<!-- <div id="new-day-action-template" style="display:none">
+	<div id="new-day-action" class="actions template-holder">
+        <a href="#" id="add-new-day">add new day</a>
+    </div>
+</div> -->
+<div id="second-page-content" style="display:none;">
+	<!-- <button onclick="buildRoute()">whole route</button> -->
+    <div class="day-container template-holder">
+        <div id="new-day-action" class="actions">
+	        <a href="#" id="add-new-day">
+	        	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+	        </a>
+	    </div>
+	    
+		
+		<script>
+		var saveOnLogin = false;
+		<?php if (!$this->layout()->session->user_id){?>
+			saveOnLogin = true;
+		<?php }?>
+		</script>
+		<button class="ui button" <?php if (!$this->layout()->session->user_id){?>onclick='loginDialog.dialog( "open" );'<?php }?> <?php if ($this->layout()->session->user_id){?> onclick="save()" <?php } ?>>Save</button>
+		
+    </div>
+</div>
+<div id="budget-type-container" style="display:none">
+	<div class="budget-type">
+		<div class="icon"></div>
+		<div class="label"><input type="text" class="budget-label" value=""></div>
+		<div class="value"><input type="text" class="budget-value" value="" disabled="disabled"></div>
+		<a href="#" onclick="deleteBudget(this); return false;"><i class="fa fa-times" aria-hidden="true"></i></a>
+	</div>
+</div>
+<div id="map"></div>
+<script>
+
+	var planId = 0;
+	var initNewDayUrl = "<?php echo $this->url("plan")?>/initPlan";
+	var updateDayInfo = "<?php echo $this->url("plan")?>/updateDayInfo";
+	var changeDateUrl = "<?php echo $this->url("plan")?>/changeDate";
+	var addDayUrl = "<?php echo $this->url("plan")?>/addDay";
+	var deleteDayUrl = "<?php echo $this->url("plan")?>/deleteDay";
+	var addSpotUrl = "<?php echo $this->url("plan")?>/addSpot";
+	var deleteSpotUrl = "<?php echo $this->url("plan")?>/deleteSpot";
+	var editSpotUrl = "<?php echo $this->url("plan")?>/editSpot";
+	var resortDays = "<?php echo $this->url("plan")?>/recalculatePositions";
+	var resortSpots = "<?php echo $this->url("plan")?>/recalculateSpotsPositions";
+	var addNewBudget = "<?php echo $this->url("plan")?>/addNewBudget";
+	var editBudget = "<?php echo $this->url("plan")?>/editBudget";
+	var deleteBudgetUrl = "<?php echo $this->url("plan")?>/deleteBudget";
+	var saveMoney = "<?php echo $this->url("plan")?>/saveMoney";
+	var saveRoadSettings = "<?php echo $this->url("plan")?>/saveRoadSettings";
+	var saveSpotsState = "<?php echo $this->url("plan")?>/saveSpotState";
+	var savePlanUrl = "<?php echo $this->url("plan")?>/savePlan";
+	
+	function toggleDaySettings(element){
+		
+		$(element).next().css({'left':mouseX, 'position':"absolute"}).slideToggle('slow');
+		
+	}
+	
+	function save(){
+		
+		$.ajax({
+		  method: "POST",
+		  url: savePlanUrl,
+		  data: { plan_id: planId }
+		})
+		.done(function( data ) {
+			
+			if (data == '0'){
+				alert("Please register first");
+			}else{
+				window.location.href = "/profile";
+			}
+			
+		});		
+		
+	}
+	
+	/**
+	 * Show or hide spots for every day and save this state
+	 */
+	function showHideSpot(element){
+		
+		$(element).next().toggle();
+		
+		var state = 0;
+		if ($(element).next().is( ":visible" )){
+			state = 0;
+		}else{
+			state = 1;
+		}
+		
+		var dayId = $(element).parent().attr("id");
+		dayId = dayId.replace("day-","");
+		
+		$.ajax({
+		  method: "POST",
+		  url: saveSpotsState,
+		  data: { day_id: dayId, state: state, plan_id: planId }
+		})
+		.done(function( msg ) {
+			
+		});
+		
+	}
+	
+	function changeRoadSettings(element, param){
+		
+		var value = 0;
+		if($(element).is(':checked')) { 
+			value = 1; 
+		}
+		
+		var dayId = $(element).parent().parent().parent().attr("id");
+		dayId = dayId.replace("day-", "");
+		
+		$.ajax({
+		  method: "POST",
+		  url: saveRoadSettings,
+		  data: { day_id: dayId, value: value, type: param, plan_id: planId }
+		})
+		.done(function( msg ) {
+			
+		});
+		
+	}
+	
+	
+	function dateUpdateCall(element){
+		
+		var dayInfo = $(element).parent().parent();
+		var dayId = dayInfo.attr('id').replace("day-", "");
+		var dayTitleValue = $(element).val();
+		
+		if (dayId){
+			$.ajax({
+			  method: "POST",
+			  url: saveDayTitle,
+			  data: { id: dayId, title: dayTitleValue }
+			})
+			.done(function( msg ) {
+				
+			});
+		}
+		
+	}
+
+	function buildBudget(){
+		
+		var html = "";
+		var label = "";
+		$(".day-container:not(.template-holder) .budget .budget-type").each(function(){
+			label = $(this).find(".budget-label").val();
+			html += "<div class='budget-popup-line'><label>"+label+"</label><input type='text' value='0' onfocus='moneyFocus(this)' onkeyup='updateTotalBudget(this)' onblur='updateTotalBudget(this)'></div>";	
+			
+		});
+		
+		$(".budget-popup").html(html);
+		$(".budget-popup-link").click(function(){
+			$(this).next().css({'left':mouseX, 'position':"absolute"}).slideToggle('slow');
+		});
+		
+	}
+	
+	function deleteBudget(element){
+
+		if ($(element).prev().find("input").val() != ""){
+			
+			if (confirm("Do you really want to delete this budget?")){
+				
+				var index = $(element).parent().index();
+				var updateLine = $(".budget-popup").find(".budget-popup-line:eq("+index+")");
+				updateLine.remove();
+				$(element).parent().remove();
+				deleteBudgetCall(element);
+				
+			}
+			
+		}else{
+			
+			var index = $(element).parent().index();
+			var updateLine = $(".budget-popup").find(".budget-popup-line:eq("+index+")");
+			updateLine.remove();
+			$(element).parent().remove();
+			deleteBudgetCall(element);
+			
+		}
+	
+			
+		
+	}
+	function deleteBudgetCall(element){
+		
+		var bId = $(element).parent().attr("id");
+		bId = bId.replace("budget-label-","");
+		
+		$.ajax({
+		  method: "POST",
+		  url: deleteBudgetUrl,
+		  data: { plan_id: planId, budget_id:bId }
+		})
+		.done(function( msg ) {
+			
+		});
+	
+	}
+	
+	function addBudget(budget, isGlobal, savetoDb){
+	
+		var content = $($("#budget-type-container").html());
+		
+		if (typeof budget != "undefined"){
+			content.attr("id","budget-label-"+budget.id);
+			content.find(".budget-label").val(budget.title);
+		}
+		
+		if (isGlobal == true){
+			content.find(".budget-label").prop('disabled', true);
+			content.find("a").remove();
+		}
+		
+		$(".budget-totals-container .budget").append(content);
+		
+		if (savetoDb == true){
+			
+			$.ajax({
+			  method: "POST",
+			  url: addNewBudget,
+			  data: { plan_id: planId }
+			})
+			.done(function( msg ) {
+				
+				$(content).attr("id","budget-label-"+msg);
+				
+				var appendedToDaysContent = $("<div class='budget-popup-line'><label>"+budget.title+"</label><input type='text' class='budget-pop-item-"+msg+"' onfocus='moneyFocus(this)' onblur='updateTotalBudget(this, true)' onkeyup='updateTotalBudget(this)' value='0'></div>");
+				$(".budget-popup").append(appendedToDaysContent);
+				
+				
+			});
+		}else{
+			
+			var bTitle = "";
+			if (budget.title != null){
+				bTitle = budget.title;
+			}
+			
+			var appendedToDaysContent = $("<div class='budget-popup-line'><label>"+bTitle+"</label><input type='text' class='budget-pop-item-"+budget.id+"' onfocus='moneyFocus(this)' onblur='updateTotalBudget(this, true)' onkeyup='updateTotalBudget(this)' value='0'></div>");
+			$(".budget-popup").append(appendedToDaysContent);
+		}
+		
+	
+		$(content).find(".budget-label").keyup(function(){
+			
+			var parent = $(this).parent().parent();
+			var index = $(parent).index();
+			var updateLine = $(".budget-popup").find(".budget-popup-line:eq("+index+")");
+			$(updateLine).find('label').html($(this).val());
+			
+		});
+		
+		$(content).find(".budget-label").blur(function(){
+			
+			var bId = $(this).parent().parent().attr("id");
+			bId = bId.replace("budget-label-", "");
+			
+			$.ajax({
+			  method: "POST",
+			  url: editBudget,
+			  data: { plan_id: planId, value: $(this).val(), id: bId}
+			})
+			.done(function( msg ) {
+				
+			});
+			
+		});
+		
+	}
+	
+	var moneyEditedBase = "";
+	
+	function moneyFocus(element){
+		moneyEditedBase = $(element).val();
+	}
+	
+	/**
+	 * Recalculate whole totals for current edited Budget type
+	 */
+	function updateTotalBudget(element, isUpdate, blockDbUpdate){
+		
+		// Get current line index
+		var editedLineIndex = $(element).parent().index();
+		
+		var budgetId = $(".budget-totals-container .budget .budget-type:eq("+editedLineIndex+")").attr("id");
+		budgetId = budgetId.replace("budget-label-","");
+		
+		var dayId = $(element).parent().parent().parent().parent().attr("id");
+		dayId = dayId.replace("day-","");
+		
+		if (isUpdate == true && moneyEditedBase != $(element).val() && typeof blockDbUpdate == "undefined"){
+			
+			$.ajax({
+			  method: "POST",
+			  url: saveMoney,
+			  data: { plan_id: planId, value: $(element).val(), day_id: dayId, budget_id: budgetId}
+			})
+			.done(function( msg ) {
+				
+			});
+		}
+		
+		var total = 0;
+		
+		// get all lines from all days of current budget type
+		$(".budget-popup").each(function(){
+			
+			$(this).find(".budget-popup-line:eq("+editedLineIndex+") input").each(function(){
+				// Summarize totals if existed
+				if ($(this).val() && $(this).val() > 0){
+					total += parseFloat($(this).val());
+				}
+			});
+			
+			
+		});
+		
+		$(".budget-totals-container .budget .budget-type:eq("+editedLineIndex+") .budget-value").val(total);
+		
+		
+	}
+
+    var map = '';
+    var planner_info = [];
+    var directionsService = '';
+    var directionsDisplay = {};
+    var waypts = [];
+    
+    /**
+     * Mage Start and End day global
+     */
+    var start_val = "";
+    var end_val = "";
+    
+    /*
+     * Инициализация карты;
+     */
+    function initAutocomplete() {
+        
+        planner_info = {};
+        map = '';
+        directionsService = '';
+        directionsDisplay = {};
+        
+        directionsService = new google.maps.DirectionsService;
+        // directionsDisplay = new google.maps.DirectionsRenderer;
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: {lat: 41.85, lng: -87.65},
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+          	mapTypeControl: true,
+	        mapTypeControlOptions: {
+              style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+              position: google.maps.ControlPosition.TOP_RIGHT
+	        },
+            zoomControl: true,
+          	zoomControlOptions: {
+              position: google.maps.ControlPosition.RIGHT_TOP
+          	},
+          	streetViewControl: false
+        });
+        polylineOptionsActual = new google.maps.Polyline({
+			    strokeColor: '#00b3fd',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 6
+		    }); 
+        
+        // .setCenter(marker.getPosition());
+        
+        // directionsDisplay.setMap(map);
+
+//        map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('trip-planner-box'));
+        // var searchStart = new google.maps.places.SearchBox(inputStart);
+        // var searchEnd = new google.maps.places.SearchBox(inputEnd);
+        // searchStart.addListener('places_changed', onChangeHandler);
+        // searchEnd.addListener('places_changed', onChangeHandler);
+        
+        $( document ).ready(function(){
+	
+			$("#next-page").trigger("click");
+			
+		});
+    }
+    
+    $(document).ready(function(){
+    	
+//    	$(".day-container").css("max-height", $(window).height() - 100);
+    	
+    });
+    
+    /*
+     * Отображение подсчет и отображение пути на карте;
+     */
+    function calculateAndDisplayRoute(directionsDisplay) {
+        directionsService.route({
+            origin: document.getElementById('input-start').value,
+            destination: document.getElementById('input-end').value,
+            waypoints: [],
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                planner_info = {
+                    'first_day':{'start_spot':start_val.value,'departure_date':'','departure_time':''},
+                    'last_day':{'end_spot':end_val.value,'arrival_date':'','arrival_time':''}
+                }
+                
+                // directionsDisplay.setDirections(response);
+                distanceMatrix(start_val.value,end_val.value);
+                nextPageClick();
+            }
+        });
+    }
+    
+    function initSpotActions(){
+    	
+    	// $(".timepicker-start-time").on('focus', function () {
+        	// previousStart = $(this).val();
+    	// }).blur(function(){
+    		// if ($(this).val() != previousStart){
+				// spotChangeStartDateAction(this);
+			// }
+		// });
+		
+		$(".comment-value").on('focus', function () {
+        	previousComment = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previousComment){
+				spotChangeCommentAction(this);
+			}
+		});
+		
+		// $(".timepicker-end-time").on('focus', function () {
+        	// previousEnd = $(this).val();
+    	// }).blur(function(){
+    		// if ($(this).val() != previousEnd){
+				// spotChangeEndDateAction(this);
+			// }
+		// });
+		
+		// console.log("d");
+		$(".input-spot").on('focus', function () {
+        	previousSpot = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previousSpot){
+				spotChangeSpotAction(this);
+			}
+		});
+    	
+    }
+    
+    function recalculateStartAndEnd(){
+
+		// $(".day-container:not(.template-holder) .day .spot .timepicker-start-time").removeClass("start-trip-item");
+    	// $(".day-container:not(.template-holder) .day .spot .timepicker-end-time").removeClass("end-trip-item");
+//     	
+    	// $(".day-container:not(.template-holder) .day .spot .timepicker-start-time").prop('disabled', false);
+    	// $(".day-container:not(.template-holder) .day .spot .timepicker-end-time").prop('disabled', false);
+//     	
+// 
+    	// $(".day-container:not(.template-holder) .day .spot:first-child .timepicker-start-time").addClass("start-trip-item");
+    	// $(".day-container:not(.template-holder) .day .spot:last-child .timepicker-end-time").addClass("end-trip-item");
+//     	
+    	// $(".day-container:not(.template-holder) .day .spot:first-child .timepicker-start-time").prop('disabled', true);
+    	// $(".day-container:not(.template-holder) .day .spot:last-child .timepicker-end-time").prop('disabled', true);
+    	// $(".day-container:not(.template-holder) .day .spot:first-child .timepicker-start-time").val("");
+    	// $(".day-container:not(.template-holder) .day .spot:last-child .timepicker-end-time").prop("");
+    	
+    }
+    
+    
+    /*
+     * Добавляет новое html после нажатия на "Next page";
+     */
+    $('#next-page').click(function(){
+
+		// Get template HTML        
+        var secondPageContent = $('#second-page-content').html();
+        
+        secondPageContent = secondPageContent.replace("template-holder","");
+        
+        // Add 2 news spots one for each day
+        secondPageContent = secondPageContent.replace("[[new-spot-content]]", $('#spot-content').html())
+        secondPageContent = secondPageContent.replace("[[new-spot-content]]", $('#spot-content').html())
+        
+        $('.start-end-box').replaceWith(secondPageContent);
+        
+        // Activate GM for each spot
+        $(".input-spot").each(function(){
+        	newDaySpotMarkerAction(this);
+        	
+        });
+        
+        //Create Action for New Day click
+        addNewDay();
+
+		// Hide Day on title click
+		// $( ".day-title" ).click(function(){
+//         	
+        	// $(this).parent().next().slideToggle(500);
+        	// $(this).parent().next().next().slideToggle(500);
+//         	
+        // });
+        
+        // Init Dates selection
+        // initDatePicker();
+
+		// Make days sortable
+        // makeSortable();
+        
+        // recalculateStartAndEnd();
+        initTooltips();
+        buildBudget();
+        
+        newDayAction();
+        //newDayAction();
+        
+        $.ajax({
+		  method: "POST",
+		  url: initNewDayUrl,
+		  data: { plan_id: '<?php echo $this->id?>'}
+		})
+		.done(function( msg ) {
+			var result = $.parseJSON(msg);
+			var dayIndex = 0;
+			
+			planId = result.plan.id;
+
+			var filledDateItem = $(".day-container:not(.template-holder) .day:eq(0) .datepicker");
+			filledDateItem.val(result.plan.start_date);
+			filledDateItem.datepicker("update", result.plan.start_date);
+			startDate = result.plan.start_date;
+
+			datepickerChangeAction(filledDateItem, true);
+
+			$.each(result.budget, function (index, value){
+				if (value.plan_id == 0){
+					addBudget(value, true);
+				}else{
+					addBudget(value, false);
+				}
+			});
+
+			$.each( result.days, function( index, value ){
+
+// return;
+				if (dayIndex > 0){
+					newDayAction();
+				}	
+
+				var filledDay = $(".day-container:not(.template-holder) .day:eq("+dayIndex+")");
+				
+				$(filledDay).prop("id", "day-"+value.id);
+				
+				newDayStartFinishSpotMarkerAction($("#day-"+value.id));
+
+				$(filledDay).find(".day-title-start-value").val(value.start_place);
+				$(filledDay).find(".day-title-start-value-lat").val(value.start_place_lat);
+				$(filledDay).find(".day-title-start-value-lng").val(value.start_place_lng);
+
+				$(filledDay).find(".day-title-end-value").val(value.finish_place);
+				$(filledDay).find(".day-title-end-value-lat").val(value.finish_place_lat);
+				$(filledDay).find(".day-title-end-value-lng").val(value.finish_place_lng);
+
+				if (value.start_time){
+					$(filledDay).find(".start-time").val(value.start_time);
+				}else{
+					$(filledDay).find(".start-time").val("0:00");
+				}
+				$(filledDay).find(".finish-time").val(value.finish_time);
+				$(filledDay).find(".day-description").val(value.description);
+				$(filledDay).find(".way-time").val(value.way_time);
+				$(filledDay).find(".way-distance").val(value.way_distance);
+				// updateDayWayDistance(value.id, value.way_distance);
+				
+				$(filledDay).find(".finish_time_edited").val(value.finish_time_edited);
+				$(filledDay).find(".way_time_edited").val(value.way_time_edited);
+				
+				
+				if (value.allow_pay_road == 1){
+					$(filledDay).find(".allow_pay_roads").prop('checked', true);
+				}
+				if (value.allow_highway == 1){
+					$(filledDay).find(".allow_highway").prop('checked', true);
+				}
+				if (value.use_bike == 1){
+					$(filledDay).find(".use_bike").prop('checked', true);
+				}
+
+				if (value.hideSpots == 1){
+					$(filledDay).find(".spots-content").hide();
+				}
+
+				var spotIndex = 0;
+				
+				if (value.spots.length == 0){
+					
+					$(filledDay).find(".spot").remove();
+					
+				}
+				
+				$.each(value.spots, function(spotKey, value){
+						
+					if (spotIndex > 0){
+						addNewSpot($(filledDay).find(".add-new-spot"), true);
+					}
+					$(filledDay).find(".day-content .spot:eq("+spotIndex+")").attr("id", "spot-"+value.id);	
+					// $(filledDay).find(".day-content .spot:eq("+spotIndex+") .timepicker-start-time").val(value.start_time);	
+					$(filledDay).find(".day-content .spot:eq("+spotIndex+") .spot-place").val(value.start_place);	
+					$(filledDay).find(".day-content .spot:eq("+spotIndex+") .spot-place-lng").val(value.lng);	
+					$(filledDay).find(".day-content .spot:eq("+spotIndex+") .spot-place-lat").val(value.lat);	
+					
+					// $(filledDay).find(".day-content .spot:eq("+spotIndex+") .timepicker-end-time").val(value.finish_time);	
+					$(filledDay).find(".day-content .spot:eq("+spotIndex+") textarea").html(value.comment);	
+					
+					makeSpotsSortable();
+					
+					spotIndex++;
+							
+				});
+
+				$.each(value.budget, function(budgetKey, value){
+					$(filledDay).find(".budget-pop-item-"+value.type_id).val(value.amount);	
+					updateTotalBudget($(filledDay).find(".budget-pop-item-"+value.type_id), true, true)				
+							
+				});
+				
+				$(filledDay).find("input[type=checkbox]").switchButton({
+					labels_placement: "right"
+				});
+				
+								
+   				dayIndex++;
+			});
+			
+			initSpotActions();
+			buildRoute();
+			
+		});
+        
+    });
+    
+    
+    function spotChangeStartDateAction(element){
+    	
+    	var startValue = $(element).val();
+    	var spotId = $(element).parent().parent().attr("id");
+    	spotId = spotId.replace("spot-","");
+
+
+		$.ajax({
+		  method: "POST",
+		  url: editSpotUrl,
+		  data: { plan_id: planId, spot_id: spotId, type:"start", value: startValue}
+		})
+		.done(function( msg ) {
+			
+        });
+		
+    }
+    
+    function spotChangeCommentAction(element){
+    	
+    	var commentValue = $(element).val();
+    	var spotId = $(element).parent().parent().attr("id");
+    	spotId = spotId.replace("spot-","");
+
+
+		$.ajax({
+		  method: "POST",
+		  url: editSpotUrl,
+		  data: { plan_id: planId, spot_id: spotId, type:"comment", value: commentValue}
+		})
+		.done(function( msg ) {
+			
+        });
+		
+    }
+    
+    function spotChangeEndDateAction(element){
+    	
+    	var value = $(element).val();
+    	var spotId = $(element).parent().parent().attr("id");
+    	spotId = spotId.replace("spot-","");
+
+
+		$.ajax({
+		  method: "POST",
+		  url: editSpotUrl,
+		  data: { plan_id: planId, spot_id: spotId, type:"end", value: value}
+		})
+		.done(function( msg ) {
+			
+        });
+		
+    }
+    function spotChangeSpotAction(element){
+    	
+    	var value = $(element).val();
+    	var spotId = $(element).parent().attr("id");
+    	spotId = spotId.replace("spot-","");
+
+
+		$.ajax({
+		  method: "POST",
+		  url: editSpotUrl,
+		  data: { plan_id: planId, spot_id: spotId, type:"point", value: value}
+		})
+		.done(function( msg ) {
+			
+        });
+		
+    }
+    
+    
+    
+    function recalculateDays(){
+        
+        var counter = 1;
+        $(".day-container:not(.template-holder) .day-index").each(function(element){
+            $(this).html(counter);
+            counter++;
+        });
+        
+    }
+    
+    function addNewSpot(element, noSave){
+        
+        var prevElement = $(element).parent().prev(".day-content").find(".spot:last");
+        if (prevElement.length == 0){
+	    	prevElement = $(element).parent().prev(".day-content");
+	    	
+	    	var insertedHtml = $($("#spot-content").html());
+	    	
+	    	// $(insertedHtml).find(".timepicker-start-time").on('focus', function () {
+	        	// previousStart = $(this).val();
+	    	// }).blur(function(){
+	    		// if ($(this).val() != previousStart){
+					// spotChangeStartDateAction(this);
+				// }
+			// });
+			
+			$(insertedHtml).find(".comment-value").on('focus', function () {
+	        	previousComment = $(this).val();
+	    	}).blur(function(){
+	    		if ($(this).val() != previousComment){
+					spotChangeCommentAction(this);
+				}
+			});
+			
+			// $(insertedHtml).find(".timepicker-end-time").on('focus', function () {
+	        	// previousEnd = $(this).val();
+	    	// }).blur(function(){
+	    		// if ($(this).val() != previousEnd){
+					// spotChangeEndDateAction(this);
+				// }
+			// });
+			
+			$(insertedHtml).find(".input-spot").on('focus', function () {
+	        	previousSpot = $(this).val();
+		    }).blur(function(){
+	    		if ($(this).val() != previousSpot){
+					spotChangeSpotAction(this);
+				}
+			});
+			
+	    	prevElement.html(insertedHtml);
+	    	
+	    	insertedHtml.find('.input-spot').each(function(){
+            	newDaySpotMarkerAction(this);
+            });
+	    	
+	    	insertedHtml.find(".comment-link").click(function(){
+			  $(this).next().css({'left':mouseX, 'position':"absolute"}).toggle('slow');
+			});
+	    	
+        }else{
+        	var appended = $($("#spot-content").html());
+	        appended.insertAfter(prevElement)
+	        
+			// appended.find(".timepicker-start-time").on('focus', function () {
+	        	// previousStart = $(this).val();
+	    	// }).blur(function(){
+	    		// if ($(this).val() != previousStart){
+					// spotChangeStartDateAction(this);
+				// }
+			// });
+			
+			appended.find(".comment-value").on('focus', function () {
+	        	previousComment = $(this).val();
+	    	}).blur(function(){
+	    		if ($(this).val() != previousComment){
+					spotChangeCommentAction(this);
+				}
+			});
+			
+			// appended.find(".timepicker-end-time").on('focus', function () {
+	        	// previousEnd = $(this).val();
+	    	// }).blur(function(){
+	    		// if ($(this).val() != previousEnd){
+					// spotChangeEndDateAction(this);
+				// }
+			// });
+			
+			appended.find(".input-spot").on('focus', function () {
+	        	previousSpot = $(this).val();
+	        }).blur(function(){
+	    		if ($(this).val() != previousSpot){
+					spotChangeSpotAction(this);
+				}
+			});
+			
+            appended.find('.input-spot').each(function(){
+            	newDaySpotMarkerAction(this);
+            });
+
+	        
+	        appended.find(".comment-link").click(function(){
+			  $(this).next().css({'left':mouseX, 'position':"absolute"}).toggle('slow');
+			});
+        }
+        // recalculateStartAndEnd();
+        
+        if (noSave != true){
+	        	
+	        var dayId = $(element).parent().parent().parent().attr("id");
+	        dayId = dayId.replace("day-", "");
+	        
+	        $.ajax({
+			  method: "POST",
+			  url: addSpotUrl,
+			  data: { plan_id: planId, day_id: dayId }
+			})
+			.done(function( msg ) {
+				
+				var result = $.parseJSON(msg);
+				$.each( result.days, function( index, value ){
+					$.each(value.spots, function(spotKey, value){
+						$("#day-"+dayId+" .spot:last").attr("id", "spot-"+value.id);	
+					});
+					
+				});
+				
+	        });
+	        
+        }
+	        
+    }
+  
+    
+    /*
+     * HTML разметка spota;
+     */ 
+    function add_html_spot(element) {
+        return $("#spot-content").html();
+    }
+    
+    /*
+     * Spot Action в текущем дне (местоположение остановки);
+     */
+    // function spot_marker_action_first_last_day(spot,day,spot_numb) {
+        // var searchBox = new google.maps.places.SearchBox(spot);
+        // map.addListener('bounds_changed', function() {
+            // searchBox.setBounds(map.getBounds());
+        // });
+        // searchBox.addListener('places_changed', function() {
+            // var places = searchBox.getPlaces();
+            // if (places.length == 0) {
+                // return;
+            // }
+            // var thisday = day.attr('class').split(' ')[1];
+//             
+            // if(thisday == 'first-day') {
+                // var count_spots = planner_info.first_day.spots.length;
+                // for(var i=0;i<count_spots;i++) {
+                    // var spot = planner_info.first_day.spots[i];
+                    // if(spot['spot_numb'] == ('spot'+spot_numb)) {
+                        // planner_info.first_day.spots[i].spot_value = places[0].formatted_address;
+                        // break;
+                    // }
+                // }
+            // } else if(thisday == 'last-day') {
+                // var count_spots = planner_info.last_day.spots.length;
+                // for(var i=0;i<count_spots;i++) {
+                    // var spot = planner_info.last_day.spots[i];
+                    // if(spot['spot_numb'] == ('spot'+spot_numb)) {
+                        // planner_info.last_day.spots[i].spot_value = places[0].formatted_address;
+                        // break;
+                    // }
+                // }
+            // }
+            // calculate_all_waypoints_on_map();
+        // });
+    // }
+//     
+    /*
+     * Расчет всех waypoints;
+     */
+    // function calculate_all_waypoints_on_map() {
+        // waypts = []; // Clear waypoint array;
+//         
+        // // First day waypoints
+        // var first_day_spots = planner_info.first_day.spots;
+        // if(typeof first_day_spots !== 'undefined' && first_day_spots.length > 0) {
+            // for(var i=0;i<first_day_spots.length;i++) {
+                // if(typeof first_day_spots[i].spot_value !== 'undefined') {
+                    // waypts.push({
+                        // location: first_day_spots[i].spot_value,
+                        // stopover: true
+                    // });
+                // }
+            // }
+        // }
+        // // New days waypoints
+        // var new_days = planner_info.new_days.day;
+        // if(typeof new_days !== "undefined") {
+            // for(var i=0;i<new_days.length;i++) {
+                // var isset_spots = true;
+                // try {
+                    // new_days[i].spots.length
+                // } catch(length) {
+                    // isset_spots = false;
+                // }
+                // if(isset_spots) {
+                    // for(var n=0;n<new_days[i].spots.length;n++) {
+                        // if(typeof new_days[i].spots[n].spot_value !== "undefined") {
+                            // waypts.push({
+                                // location: new_days[i].spots[n].spot_value,
+                                // stopover: true
+                            // });
+// 
+                        // }
+                    // }
+                // }
+            // }
+        // }
+        // // Last day weypoints
+        // var last_day_spots = planner_info.last_day.spots;
+        // if (typeof last_day_spots !== "undefined" && last_day_spots.length > 0) {
+            // if(planner_info.last_day.spots.length > 0) {
+                // for(var i=0;i<planner_info.last_day.spots.length;i++) {
+                    // if(typeof last_day_spots[i].spot_value !== "undefined") {
+                        // waypts.push({
+                            // location: planner_info.last_day.spots[i].spot_value,
+                            // stopover: true
+                        // });
+                    // }
+                // }
+            // }
+        // }
+        // reload_waypoints();
+    // }
+    
+    /*
+     * Функция самой перезагрузки карты с остановками;
+     */
+    // function reload_waypoints() {
+        // directionsService.route({
+            // origin: planner_info.first_day.start_spot,
+            // destination: planner_info.last_day.end_spot,
+            // waypoints: waypts,
+            // optimizeWaypoints: false,
+            // travelMode: google.maps.TravelMode.DRIVING
+        // }, function(response, status) {
+            // if (status === google.maps.DirectionsStatus.OK) {
+                // directionsDisplay.setDirections(response);
+            // } else {
+                // alert('Directions request failed due to ' + status);
+            // }
+        // });
+    // }
+//     
+    /*
+     * Показать/скрыть выпадающее меню текущего Spot-a;
+     */
+    function tooltipClick() {
+        $('.tooltip-ellipsis').unbind( "click" );
+        $('.tooltip-ellipsis').click(function(e){
+            e.preventDefault();
+            $(this).parent().find(".spot-menu").toggleClass("display-none");
+        });
+    }
+    
+    function deleteSpot(element){
+    	
+    	var spotId = $(element).parent().attr("id");
+    	// console.log(spotId);
+    	// return false;
+		spotId = spotId.replace("spot-","");
+		
+    	$.ajax({
+		  method: "POST",
+		  url: deleteSpotUrl,
+		  data: { id: spotId, plan_id: planId }
+		})
+		.done(function( msg ) {
+			if (msg == '1'){
+		        $(element).parent().remove();
+			}
+		});
+		
+		return false;
+		
+    }
+    
+    var startDate = "";
+    var datepickerChangeCalled = false;
+    function datepickerChangeAction(element, stopUpdate){
+    	
+    	if (startDate == ""){
+    		return false;
+    	}
+    	
+    	if (stopUpdate != true){
+	    	if (datepickerChangeCalled){
+	    		return false;
+			}
+			datepickerChangeCalled = true;
+		}
+		var dmy = startDate.split("/");
+		var joinDate = new Date(
+			parseInt(dmy[2], 10),
+			parseInt(dmy[1], 10) - 1,
+			parseInt(dmy[0], 10)
+		);
+	
+		var weekday = joinDate.toString().split(" ")[0];
+        var current_day = $(element);
+        current_day.parent().find('.weekday').remove();
+        current_day.after('<span class="weekday">'+weekday+'</span>');
+        recalculateDates();
+        
+        if (stopUpdate != true){
+	        $.ajax({
+			  method: "POST",
+			  url: changeDateUrl,
+			  data: { date: startDate, plan_id: planId }
+			})
+			.done(function( msg ) {
+				datepickerChangeCalled = false;
+	        });
+        }
+    	
+    }
+    function initDatePicker(){
+    	    
+    	$(".datepicker").prop('disabled', true);
+    	$('.weekday').remove();
+    	
+    	$(".day-container:not(.template-holder) .datepicker:first").removeClass("cannot-edit");
+    	$(".day-container:not(.template-holder) .datepicker:first").prop('disabled', false);
+
+    	$(".day-container:not(.template-holder) .datepicker:not(:first)").addClass("cannot-edit");
+    	
+    	$(".day-container:not(.template-holder) .datepicker:first").datepicker().on('changeDate', function(ev){
+
+    		startDate = ev.target.value;
+    		datepickerChangeAction(this);
+    		
+        });
+        
+        recalculateDates();
+    	
+    }
+    function recalculateDates(){
+    	
+    	var selectedValue = startDate;
+    	
+    	$(".datepicker").prop('disabled', true);
+    	$('.day-container:not(.template-holder) .weekdy:not(:first)').remove();
+    	$(".day-container:not(.template-holder) .datepicker:first").prop('disabled', false);
+    	
+    	if (selectedValue.length > 0){
+    		
+    		var dateIndex = 1;
+    		
+    		var dmy = selectedValue.split("/");
+			var joinDate = new Date(
+				parseInt(dmy[2], 10),
+				parseInt(dmy[1], 10) - 1,
+				parseInt(dmy[0], 10)
+			);
+
+    		$(".day-container:not(.template-holder) .datepicker:not(:first)").each(function(){
+    			
+    			joinDate.setDate(joinDate.getDate() + dateIndex);
+    			var finalDate = ("0"+joinDate.getDate()).slice(-2) + "/" + ("0" + (joinDate.getMonth() + 1)).slice(-2) + "/" + joinDate.getFullYear();
+    			
+    			$(this).val(finalDate);
+    			
+    			var parts = finalDate.split('/');
+    			var dateFormat = new Date(parts[2], parts[1]-1, parts[0]);
+    			var weekday = dateFormat.toString().split(" ")[0];
+    			
+    			
+    			$(this).parent().find('.weekday').remove();
+	            $(this).after('<span class="weekday">'+weekday+'</span>');
+    			
+    		});
+    		
+    		$(".day-container:not(.template-holder) .datepicker:first").val(startDate);
+    		
+			var startJoinDate = new Date(
+				parseInt(dmy[2], 10),
+				parseInt(dmy[1], 10) - 1,
+				parseInt(dmy[0], 10)
+			);
+			var weekday = startJoinDate.toString().split(" ")[0];
+            var current_day = $(".day-container:not(.template-holder) .datepicker:first");
+            current_day.parent().find('.weekday').remove();
+            current_day.after('<span class="weekday">'+weekday+'</span>');
+            
+    		
+    		
+    	}
+    }
+    
+    /*
+     * Generate Action for Add New Day 
+     */
+    function addNewDay() {
+        
+        var count = 1;
+        $('.day-container:not(.template-holder) #add-new-day:not(.template-holder)').click(function(event){
+
+            event.preventDefault();
+            newDayAction();
+            
+            $.ajax({
+			  method: "POST",
+			  url: addDayUrl,
+			  data: { plan_id: planId }
+			})
+			.done(function( msg ) {
+				
+				var result = $.parseJSON(msg);
+				
+				$.each( result.days, function( index, value ){
+
+					var filledDay = $(".day-container:not(.template-holder) .day:last");
+					$(filledDay).prop("id", "day-"+value.id);
+	
+					$.each(value.spots, function(spotKey, value){
+						$(filledDay).find(".day-content .spot:last").attr("id", "spot-"+value.id);	
+					});
+					
+					newDayStartFinishSpotMarkerAction($("#day-"+value.id));
+					
+					$(filledDay).find("input[type=checkbox]").switchButton({
+						labels_placement: "right"
+					});
+            
+        							
+				});
+				
+			});
+            
+            
+        });
+    }
+    
+    /**
+     * Update Way distance in database
+     */
+    function updateDayWayDistance(dayId, value){
+    	
+    	$.ajax({
+		  method: "POST",
+		  url: updateDayInfo,
+		  data: { plan_id: planId, dayId: dayId, type:"way_distance", value: value}
+		})
+		.done(function( msg ) {
+			
+        });
+        
+    }
+    
+    /**
+     * Update Way time in database
+     */
+    function updateDayWayTime(dayId, value, edited){
+    	
+    	if (edited != 1){
+    		edited = 0;
+    	}
+    
+    	$.ajax({
+		  method: "POST",
+		  url: updateDayInfo,
+		  data: { plan_id: planId, dayId: dayId, type:"way_time", value: value, edited: edited}
+		})
+		.done(function( msg ) {
+			
+        });
+        
+    }
+    
+    function newDayAction(){
+    	
+    	var link = $(".day-container:not(.template-holder) #add-new-day");
+    	
+    	var html = $("#day-content").html();
+    	html = html.replace("template-holder", "");
+    	
+    	var appended = $(html);
+            
+        appended.find(".day-title-start-value").on('focus', function () {
+        	previous = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previous){
+    			
+    			$(this).next().val("");
+    			$(this).next().next().val("");
+    			
+    			var dayId = $(this).parent().parent().parent().attr("id");
+    			dayId = dayId.replace("day-","");
+    			
+    			var value = $(this).val();
+    			
+				$.ajax({
+				  method: "POST",
+				  url: updateDayInfo,
+				  data: { plan_id: planId, dayId: dayId, type:"start", value: value}
+				})
+				.done(function( msg ) {
+					
+		        });
+			}
+		});
+		
+		appended.find(".start-time").on('focus', function () {
+        	previous = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previous){
+    			
+    			var dayId = $(this).parent().parent().parent().attr("id");
+    			dayId = dayId.replace("day-","");
+    			
+    			var value = $(this).val();
+    			
+				$.ajax({
+				  method: "POST",
+				  url: updateDayInfo,
+				  data: { plan_id: planId, dayId: dayId, type:"start_time", value: value}
+				})
+				.done(function( msg ) {
+
+					/**
+					 * Calculate finish time based on already calculated way time (if existed) and start time
+					 */
+					var arrivalTime = $("#day-"+dayId).find(".start-time").val();
+					if (arrivalTime != "" && typeof arrivalTime != "undefined" && arrivalTime != "NaN" ){
+						var times = arrivalTime.split(":");
+						arrivalTime = times[1]*60 + times[0]*60*60;
+					}else{
+						arrivalTime = 0;
+					}
+					
+					var alreadyCalculatedDuration = $("#day-"+dayId).find(".way-time").val();
+					if (alreadyCalculatedDuration != "" && typeof alreadyCalculatedDuration != "undefined" && alreadyCalculatedDuration != "NaN" ){
+						var times = alreadyCalculatedDuration.split(":");
+						alreadyCalculatedDuration = times[1]*60 + times[0]*60*60;
+					}else{
+						alreadyCalculatedDuration = 0;
+					}
+					
+					if (alreadyCalculatedDuration != 0){
+						
+						arrivalTime += alreadyCalculatedDuration;
+						arrivalTime = (new Date).clearTime()
+									          .addSeconds(arrivalTime)
+									          .toString('H:mm');
+						
+						$("#day-"+dayId).find(".finish-time").val(arrivalTime);
+						
+					}
+					previous = false;
+					
+		        });
+			}
+		});
+		
+		var dayDescription = false;
+		
+		appended.find(".day-description").on('focus', function (e) {
+        	
+        	dayDescription = $(this).val();
+        	
+    	}).blur(function(){
+    		
+    		if (dayDescription != $(this).val()){
+    			
+    			var dayId = $(this).parent().parent().parent().attr("id");
+    			dayId = dayId.replace("day-","");
+    			
+    			var value = $(this).val();
+    			
+				$.ajax({
+				  method: "POST",
+				  url: updateDayInfo,
+				  data: { plan_id: planId, dayId: dayId, type:"description", value: value}
+				})
+				.done(function( msg ) {
+					
+		        });
+			}
+		});
+		
+		
+		var finishTimeKeyUp = false;
+		var finishTimeKeyCode = false;
+
+		/**
+		 * At the moment editing of finish time is not allowed
+		 */
+		// appended.find(".finish-time").on('keyup', function (e) {
+        	// finishTimeKeyUp = true;
+        	// finishTimeKeyCode = e.keyCode || e.which;
+    	// }).blur(function(){
+//     		
+    		// if (finishTimeKeyUp && finishTimeKeyCode != 9){
+//     			
+    			// var dayId = $(this).parent().parent().parent().attr("id");
+    			// dayId = dayId.replace("day-","");
+//     			
+    			// var value = $(this).val();
+//     			
+    			// $("#day-"+dayId).find(".finish-time-edited").val(1);
+//     			
+				// $.ajax({
+				  // method: "POST",
+				  // url: updateDayInfo,
+				  // data: { plan_id: planId, dayId: dayId, type:"finish_time", value: value, edited: 1}
+				// })
+				// .done(function( msg ) {
+// 					
+		        // });
+			// }
+		// });
+		
+		appended.find(".way-time").on('focus', function () {
+        	previous = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previous){
+    			
+    			var dayId = $(this).parent().parent().parent().attr("id");
+    			dayId = dayId.replace("day-","");
+    			
+    			var value = $(this).val();
+    			
+    			$("#day-"+dayId).find(".way-time-edited").val(1);
+
+				updateDayWayTime(dayId, value, 1);
+
+				$(".start-time").blur();
+
+			}
+		});
+		
+		
+        appended.find(".day-title-end-value").on('focus', function () {
+        	previous = $(this).val();
+    	}).blur(function(){
+    		if ($(this).val() != previous){
+    			
+    			$(this).next().val("");
+    			$(this).next().next().val("");
+    			
+    			var dayId = $(this).parent().parent().parent().attr("id");
+    			dayId = dayId.replace("day-","");
+    			
+    			var value = $(this).val();
+    			
+				$.ajax({
+				  method: "POST",
+				  url: updateDayInfo,
+				  data: { plan_id: planId, dayId: dayId, type:"end", value: value}
+				})
+				.done(function( msg ) {
+					
+		        });
+			}
+		});
+
+		
+        appended.find(".comment-link").click(function(){
+		  $(this).next().css({'left':mouseX, 'position':"absolute"}).toggle('slow');
+		});
+		
+		appended.find(".budget-popup-link").click(function(){
+			$(this).next().css({'left':mouseX, 'position':"absolute"}).slideToggle('slow');
+		});
+        
+        appended.insertBefore($(link).parent());
+        
+        appended.find('.input-spot').each(function(){
+        	newDaySpotMarkerAction(this);
+        });
+        
+        recalculateDays();
+		recalculateDates();
+
+		// $(appended).find(".day-title").click(function(){
+        	// $(link).parent().next().slideToggle(500);
+        	// $(link).parent().next().next().slideToggle(500);
+        // });
+        
+        makeSortable();
+		makeSpotsSortable();
+
+        
+        initDatePicker();
+
+		// recalculateStartAndEnd();
+		
+    }
+    
+    function newDayStartFinishSpotMarkerAction(day) {
+    	
+    	var dayId = $(day).attr("id");
+    	dayId = dayId.replace("day-","");
+    	
+    	var startPoint = $(day).find(".day-title-start-value");
+    	startPoint = startPoint[0];
+    	
+    	var endPoint = $(day).find(".day-title-end-value");
+    	endPoint = endPoint[0];
+    	
+    	var searchBoxStart = new google.maps.places.SearchBox(startPoint);
+    	var searchBoxEnd = new google.maps.places.SearchBox(endPoint);
+
+    	// var searchedElement = spot;
+        searchBoxStart.addListener('places_changed', function() {
+        	
+        	var currentDay = dayId;
+        	
+        	var places = searchBoxStart.getPlaces();
+        	var value = places[0].formatted_address;
+
+        	var lng = places[0].geometry.location.lng();
+        	var lat = places[0].geometry.location.lat();
+        	
+        	$(day).find(".day-title-start-value-lat").val(lat);
+        	$(day).find(".day-title-start-value-lng").val(lng);
+        	
+        	// console.log(searchBoxStart);
+
+			$.ajax({
+			  method: "POST",
+			  url: updateDayInfo,
+			  data: { plan_id: planId, dayId: dayId, type:"start", value: value, lat: lat, lng: lng}
+			})
+			.done(function( msg ) {
+				$("#day-"+currentDay+ " .day-title-start-value").val(value);
+				showDayMap($(day).find(".show-day-map"));
+	        });
+
+        });
+        
+        searchBoxEnd.addListener('places_changed', function() {
+        	
+        	var currentDay = dayId;
+
+        	var places = searchBoxEnd.getPlaces();
+        	var value = places[0].formatted_address;
+
+        	var lng = places[0].geometry.location.lng();
+        	var lat = places[0].geometry.location.lat();
+        	
+        	$(day).find(".day-title-end-value-lat").val(lat);
+        	$(day).find(".day-title-end-value-lng").val(lng);
+        	
+
+			$.ajax({
+			  method: "POST",
+			  url: updateDayInfo,
+			  data: { plan_id: planId, dayId: dayId, type:"end", value: value, lat: lat, lng: lng}
+			})
+			.done(function( msg ) {
+				$("#day-"+currentDay+ " .day-title-end-value").val(value);
+				showDayMap($(day).find(".show-day-map"));
+	        });
+
+        });
+    }
+    
+    function newDaySpotMarkerAction(spot) {
+    	var searchBox = new google.maps.places.SearchBox(spot);
+    	var searchedElement = spot;
+        searchBox.addListener('places_changed', function() {
+        	
+        	var places = searchBox.getPlaces();
+        	
+        	var value = places[0].formatted_address;
+
+			var spotId = $(searchedElement).parent().attr("id");
+	    	spotId = spotId.replace("spot-","");
+	
+			var lng = places[0].geometry.location.lng();
+        	var lat = places[0].geometry.location.lat();
+        	
+        	$("#spot-"+spotId).find(".spot-place-lat").val(lat);
+        	$("#spot-"+spotId).find(".spot-place-lng").val(lng);
+        	
+			$.ajax({
+			  method: "POST",
+			  url: editSpotUrl,
+			  data: { plan_id: planId, spot_id: spotId, type:"point", value: value, lat: lat, lng: lng}
+			})
+			.done(function( msg ) {
+				$("#spot-"+spotId + " .spot-place").val(value);
+				// console.log($("#spot-"+spotId).parent().parent().parent().find(".show-day-map"));
+				showDayMap($("#spot-"+spotId).parent().parent().parent().find(".show-day-map"));
+	        });
+
+        });
+    }
+    
+    /*
+     * Spot Action в новом дне (местоположение остановки);
+     */
+    // function new_day_spot_marker_action(spot,spot_numb,day_index,this_day) {
+        // var searchBox = new google.maps.places.SearchBox(spot);
+        // map.addListener('bounds_changed', function() {
+            // searchBox.setBounds(map.getBounds());
+        // });
+        // searchBox.addListener('places_changed', function() {
+            // var places = searchBox.getPlaces();
+            // if (places.length == 0) {
+                // return;
+            // }
+            // for(var i=0;i<this_day.spots.length;i++) {
+                // if(this_day.spots[i]["spot_numb"] == ("spot"+spot_numb)) {
+                    // planner_info.new_days.day[day_index].spots[i].spot_value = places[0].formatted_address;
+                    // break;
+                // }
+            // }
+            // calculate_all_waypoints_on_map();
+        // });
+    // }
+//     
+    /*
+     * Добавляет новый spot к новому дню;
+     */
+    // function add_new_spot_to_new_day_action(day_index,this_day) {
+        // var spot_numb = 3;
+        // $("."+this_day.day_class+" .add-new-spot").unbind( "click" );
+        // $("."+this_day.day_class+" .add-new-spot").click(function(event){
+            // event.preventDefault();
+            // $("."+this_day.day_class).find(".day-content").append(add_html_spot(this_day.day_class,spot_numb));
+//             
+            // if(this_day.spots) {
+                // planner_info.new_days.day[day_index].spots.push({spot_numb:"spot"+spot_numb});
+            // } else {
+                // planner_info.new_days.day[day_index].spots = [{spot_numb:'spot'+spot_numb}];
+            // }
+//             
+            // if_change_timepicker_new_day_spots(this_day.day_class,"spot"+spot_numb);
+//             
+            // var current_spot = $("."+this_day.day_class).find('.spot'+spot_numb+' .input-spot')[0];
+            // new_day_spot_marker_action(current_spot,spot_numb,day_index,this_day)
+            // tooltipClick();
+            // spot_numb++;
+        // });
+    // }
+//     
+    function makeSpotsSortable(){
+    	
+    	$('.day-content').sortable({
+	        items: '.spot',
+	        stop: function(){
+	    		// initDatePicker();
+	    		// recalculateDays();
+	    		// recalculateDates();
+	    		// recalculateStartAndEnd();
+
+	    		var spotsIds = new Array();
+	    		var i = 0; 
+				$(this).find(".spot").each(function(){
+					spotsIds[i] = $(this).attr("id");
+					i++;
+				});
+				
+				var dayId = $(this).parent().attr("id");
+				dayId = dayId.replace("day-","");
+				
+				$.ajax({
+				  method: "POST",
+				  url: resortSpots,
+				  data: { ids: spotsIds, plan_id: planId, day_id: dayId }
+				})
+				.done(function( msg ) {
+					
+				});
+				
+				// recalculateStartAndEnd();
+	    	}	
+	    });
+	    
+    }
+   
+    function makeSortable(){
+    	
+    	$('.day-container').sortable({
+	        items: '.day',
+	        stop: function(){
+	    		initDatePicker();
+	    		recalculateDays();
+	    		recalculateDates();
+	    		// recalculateStartAndEnd();
+	    		
+	    		var daysIds = new Array();
+	    		var i = 0; 
+				$(".day-container:not(.template-holder) .day").each(function(){
+					daysIds[i] = $(this).attr("id");
+					i++;
+				});
+				
+				$.ajax({
+				  method: "POST",
+				  url: resortDays,
+				  data: { ids: daysIds, plan_id: planId }
+				})
+				.done(function( msg ) {
+					
+					
+					
+				});
+		    		
+	    	}	
+	    });
+    	
+    }
+    
+    /*
+     * Удаление нового дня;
+     */
+    function deleteDay(element, day_index,day_class) {
+        
+		var dayId = $(element).parent().parent().attr("id");
+		dayId = dayId.replace("day-","");
+		
+		$.ajax({
+		  method: "POST",
+		  url: deleteDayUrl,
+		  data: { id: dayId, plan_id: planId }
+		})
+		.done(function( msg ) {
+			if (msg == '1'){
+				$(element).closest(".day").remove();
+		        recalculateDays();
+				recalculateDates();
+		        initDatePicker();
+				// recalculateStartAndEnd();
+			}
+		});
+		
+        
+    }
+    
+    function initTooltips(){
+
+		$(".comment-link").click(function(){
+		  $(this).next().css({'left':mouseX, 'position':"absolute"}).toggle('slow');
+		});
+    	
+    }
+    
+    var mouseX;
+	var mouseY;
+	$(document).mousemove( function(e) {
+	   mouseX = e.pageX; 
+	   mouseY = e.pageY;
+	});  
+	
+	var infowindow = {};
+	var polylineOptionsActual = {};
+	var mapPoints = {};
+	var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	var labelIndex = 0;
+	
+	// var currentColor = "#00b3fd";
+	function getRandomColor() {
+		return "#00b3fd";
+		
+	    var letters = '0123456789ABCDEF'.split('');
+	    var color = '#';
+	    for (var i = 0; i < 6; i++ ) {
+	        color += letters[Math.floor(Math.random() * 16)];
+	    }
+	    return color;
+	}
+
+
+	var travelMode = false;
+
+	function addRoute(startX, startY, waypoints, avoidSpeedway, avoidToll, dateId, spotId, wholeway, isLast){
+
+		// console.log("call AddRoute");
+		// console.log(startX);
+		// console.log(startY);
+		// console.log(waypoints);
+		// console.log(dateId);
+		// console.log(spotId);
+		// console.log(wholeway);
+		// console.log("========");
+	
+		/**
+		 * Clean previous infot for this day
+		 */
+		if (wholeway != true){
+			
+		}
+		
+		/**
+		 * Set clean values for Day Object
+		 */
+		if (typeof dateId != "undefined"){
+			
+			// , polylineOptions: polylineOptionsActual
+			if (!directionsDisplay[dateId] || typeof directionsDisplay[dateId] == "undefined"){
+				directionsDisplay[dateId] = {};
+			}
+			directionsDisplay[dateId][spotId] = new google.maps.DirectionsRenderer({suppressMarkers: true, suppressBicyclingLayer: true, polylineOptions: {
+		      strokeColor: currentColor,
+		      strokeOpacity: 0.5,
+		      strokeWeight: 7
+		    }});
+		}
+
+        directionsDisplay[dateId][spotId].setMap(map);
+
+        var start = startX;
+        var end = startY;
+
+        if (typeof waypoints == "undefined" || waypoints == ""){
+            waypoints = [];
+        }
+
+        avoidSpeedwayFlag = false;
+        if (avoidSpeedway == true){
+            avoidSpeedwayFlag = true;
+        }
+        avoidTollFlag = false;
+        if (avoidToll == true){
+            avoidTollFlag = true;
+        }
+
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: travelMode,
+            waypoints: waypoints,
+            avoidHighways: avoidSpeedwayFlag,
+            avoidTolls: avoidTollFlag,
+            avoidFerries: false,
+            provideRouteAlternatives: true,
+            optimizeWaypoints: true
+        };
+
+
+		/**
+		 * Calculate Route
+		 */
+        directionsService.route(request, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+            	
+        		routeBounds = result.routes[0].bounds;
+
+            	var shortest = 0;
+            	var shortestKey = 0;
+            	for (var i = 0; i < result.routes.length; i++){
+            		if (shortest == 0 || shortest > result.routes[i].legs[0].distance.value){
+            			shortest = result.routes[i].legs[0].distance.value;
+            			shortestKey = i;
+            		}
+            	}
+            	
+            	for (var i = 0; i < result.routes.length; i++){
+            		if (shortestKey != i){
+						result.routes.splice(i, 1);
+            		}
+            	}
+            	
+            	// console.log(result);
+            	
+            	
+				/**
+				 * Set clean objects for start and end points
+				 */
+                directionsDisplay[dateId][spotId].setDirections(result);
+				if (!mapPoints[dateId] || typeof mapPoints[dateId] == "undefined"){
+					mapPoints[dateId] = {};
+				}
+				if (!mapPoints[dateId][spotId] || typeof mapPoints[dateId][spotId] == "undefined"){
+					mapPoints[dateId][spotId] = {};
+				}
+
+				/**
+				 * Labels Blocked for a while, because ROUTES calculates in wrong direction
+				 */
+				/**
+				 * Set start and end points for route
+				 */
+				mapPoints[dateId][spotId]['start'] = new google.maps.Marker({
+				    position: {lat: result.routes[0].legs[0].start_location.lat(), lng: result.routes[0].legs[0].start_location.lng()},
+				    map: map,
+				    // label: labels[labelIndex]
+			    });
+// 			    
+			    // labelIndex++;
+			    
+			    /**
+			     * If route is last one - set final flag
+			     */
+			    if (isLast == true){
+
+				    mapPoints[dateId][spotId]['end'] = new google.maps.Marker({
+					    position: {lat: result.routes[0].legs[0].end_location.lat(), lng: result.routes[0].legs[0].end_location.lng()},
+					    map: map,
+					    // label: labels[labelIndex]
+				    });
+// 			    	
+			    	// labelIndex++;
+			    }
+			    
+			    /**
+			     * =========================================================
+			     */
+				
+	
+				/**
+				 * Create info windows, set position in the middle leg of the route
+				 */
+				if (!wholeway){
+				
+					if (!infowindow[dateId] || typeof infowindow[dateId] == "undefined"){
+						infowindow[dateId] = {};
+					}
+					infowindow[dateId][spotId] = new google.maps.InfoWindow();
+					// console.log("Info Route Window:"+result.routes[0].legs[0].distance.text + "<br>" + result.routes[0].legs[0].duration.text + " ");
+				    infowindow[dateId][spotId].setContent(result.routes[0].legs[0].distance.text + "<br>" + result.routes[0].legs[0].duration.text + " ");
+				    
+				    var step = result.routes[0].legs[0].steps.length / 2;
+				    step = Math.round(step);
+				    
+				    infowindow[dateId][spotId].setPosition(result.routes[0].legs[0].steps[step].end_location);
+				    infowindow[dateId][spotId].open(map);
+			
+				}
+				
+				/**
+				 * Calculate whole day duration trip
+				 */
+
+				if ($("#"+dateId).find(".way_time_edited").val() != 1){
+		
+					var duration = $("#"+dateId).find(".way-time").val();
+					if (duration != "" && typeof duration != "undefined" && duration != "NaN" ){
+						var times = duration.split(":");
+						duration = times[1]*60 + times[0]*60*60;
+					}else{
+						duration = 0;
+					}
+					
+					duration += result.routes[0].legs[0].duration.value;
+					duration = (new Date).clearTime()
+								          .addSeconds(duration)
+								          .toString('H:mm');
+					
+					$("#"+dateId).find(".way-time").val(duration);
+		
+				}else{
+					
+					var localsavedStartTime = $("#"+dateId).find(".start-time").val();
+					if (localsavedStartTime != "" && typeof localsavedStartTime != "undefined" && localsavedStartTime != "NaN" ){
+						var times = localsavedStartTime.split(":");
+						localsavedStartTime = times[1]*60 + times[0]*60*60;
+					}else{
+						localsavedStartTime = 0;
+					}
+					
+					var localduration = $("#"+dateId).find(".way-time").val();
+					if (localduration != "" && typeof localduration != "undefined" && localduration != "NaN" ){
+						var times = localduration.split(":");
+						localduration = times[1]*60 + times[0]*60*60;
+					}else{
+						localduration = 0;
+					}
+					
+					var finishTime = (new Date).clearTime()
+								          .addSeconds(localduration+localsavedStartTime)
+								          .toString('H:mm');
+					
+					$("#"+dateId).find(".finish-time").val(finishTime);
+
+				}
+				
+				/**
+				 * Calculate day finish point time
+				 */
+				if ($("#"+dateId).find(".finish_time_edited").val() != 1 && $("#"+dateId).find(".way_time_edited").val() != 1){
+
+					var savedStartTime = $("#"+dateId).find(".start-time").val();
+					if (savedStartTime != "" && typeof savedStartTime != "undefined" && savedStartTime != "NaN" ){
+						var times = savedStartTime.split(":");
+						savedStartTime = times[1]*60 + times[0]*60*60;
+					}else{
+						savedStartTime = 0;
+					}
+
+					var arrivalTime = $("#"+dateId).find(".finish-time").val();
+					if (arrivalTime != "" && typeof arrivalTime != "undefined" && arrivalTime != "NaN" ){
+						var times = arrivalTime.split(":");
+						arrivalTime = times[1]*60 + times[0]*60*60;
+					}else{
+						arrivalTime = 0;
+					}
+					
+//					if (startDateApplied == false){
+//						arrivalTime = arrivalTime + savedStartTime;
+//						startDateApplied = true;
+//					}
+					
+
+					
+					arrivalTime += result.routes[0].legs[0].duration.value;
+					arrivalTime = (new Date).clearTime()
+								          .addSeconds(arrivalTime)
+								          .toString('H:mm');
+					
+					$("#"+dateId).find(".finish-time").val(arrivalTime);
+				
+				}
+				
+				currentTripStep[dateId]++;
+				
+				/**
+				 * Calculate whole day distance
+				 */
+				var countedDistance = $("#"+dateId).find(".way-distance").val() * 1000;
+				countedDistance += result.routes[0].legs[0].distance.value;
+				countedDistance = countedDistance / 1000;
+				countedDistance = Math.round(countedDistance*100)/100;
+				$("#"+dateId).find(".way-distance").val(countedDistance);
+				
+				/*
+				 * If its a last route - save route distance to database
+				 */
+				// console.log("currentTripStep - " + currentTripStep[dateId]);
+				// console.log("tripSteps - " + tripSteps[dateId]);
+				if (isLast == true && currentTripStep[dateId] == tripSteps[dateId]){
+					// console.log("Update - " + countedDistance);
+					currentTripStep[dateId] = 0;
+					var localDayId = dateId.replace("day-","");
+					updateDayWayDistance(localDayId, countedDistance);
+					
+					/*
+					 * If its a last route - save way time to database
+					 */
+					updateDayWayTime(localDayId, duration);
+				}
+				
+				// Wait for map to be idle before calling offsetMap function
+	            google.maps.event.addListener(map, 'idle', function () {
+	                // Offset map
+	                offsetMap();
+	            });
+                
+            } else {
+        
+        		try{
+	        		if (result.geocoded_waypoints[1].geocoder_status == google.maps.DirectionsStatus.ZERO_RESULTS){
+	        			if (spotId != "last"){
+		        			$("#"+spotId).css("background","red");
+	        			}else{
+	        				$("#"+dateId).find(".day-title-end-value").css("color","red");
+	        			}
+	        		}else{
+		        		if (status == google.maps.DirectionsStatus.ZERO_RESULTS && spotId == "last"){
+	        				$("#"+dateId).find(".day-title-end-value").css("color","red");
+		        		}
+	        		}
+	        		if (result.geocoded_waypoints[0].geocoder_status == google.maps.DirectionsStatus.ZERO_RESULTS){
+	        			if (spotId == $("#"+dateId + " .day-content .spot:first-child").attr("id")){
+		        			$("#"+dateId).find(".day-title-start-value").css("color","red");
+	        			}
+	        		}
+        		}catch(e){
+        			alert(e);
+        		}
+		            	
+            }
+        });
+
+
+    }
+    /**
+     * CleanMap for all items
+     */
+    function cleanMap(){
+    	
+    	// console.log(directionsDisplay);
+    	if (directionsDisplay){
+			$.each(directionsDisplay, function( dayIndex, value ) {
+				try{
+					$.each(directionsDisplay[dayIndex], function( index, value ) {
+						try{
+							try{
+								directionsDisplay[dayIndex][index].setMap(null);
+							}catch(e){
+					
+							}
+							try{
+								infowindow[dayIndex][index].close();
+							}catch(e){
+					
+							}
+							try{
+								mapPoints[dayIndex][index]['start'].setMap(null);
+							}catch(e){
+					
+							}
+							try{
+								mapPoints[dayIndex][index]['end'].setMap(null);
+							}catch(e){
+					
+							}
+						}catch(e){
+					
+						}
+					});
+				}catch(e){
+					
+				}
+			});
+		}
+    	
+    }
+    
+    var globalRouteBuild = false;
+    var currentColor = "#00b3fd";
+    
+    var tripSteps = new Array();
+    var currentTripStep = new Array();
+    
+    // var tripSteps = 1;
+    // var currentTripStep = 1;
+    	
+    
+    function buildRoute(){
+    	
+		cleanMap();
+
+    	var days = $(".day-container .day").each(function(){
+    	
+    		currentColor = getRandomColor();
+	    	showDayMap($(this).find(".show-day-map"), true);
+    		
+    	});
+    	
+    	
+    }
+    function showDayMap(element, wholeRoute){
+    	
+    	
+    	if (typeof wholeRoute == "undefined"){
+    		wholeRoute = false;
+    	}
+    	
+    	var day = $(element).parent().parent();
+    	
+//    	startDateApplied = false;
+    	day.find(".way-distance").val("");
+		if (day.find(".finish_time_edited").val() != 1){
+			day.find(".finish-time").val("");	
+		}
+		// console.log("finish-time:"+day.find(".finish-time").val());
+		if ((day.find(".finish-time").val() == "0:00" || day.find(".finish-time").val() == "") && day.find(".start-time").val() != "0:00" ){
+			day.find(".finish-time").val(day.find(".start-time").val());
+		}
+		if (day.find(".way_time_edited").val() != 1){
+			day.find(".way-time").val("");	
+		}
+
+    	
+    	// dayId = day.attr("id").replace("day-","");
+    	// console.log(dayId);
+    	
+    	var isAllowPaidRoads = true;
+    	if ($(day).find(".allow_pay_roads").is(':checked')){
+    		isAllowPaidRoads = false;
+    	}
+
+    	var isAllowHighway = true;
+    	if ($(day).find(".allow_highway").is(':checked')){
+    		isAllowHighway = false;
+    	}
+    	
+    	travelMode = google.maps.TravelMode.DRIVING;
+    	if ($(day).find(".use_bike").is(':checked')){
+			travelMode = google.maps.TravelMode.BICYCLING;
+    	}
+    	
+    	var spots = $(day).find(".day-content .spot");
+    	
+
+    	/**
+    	 * Reset colors
+    	 */
+		$(".spot").css("background","white");
+		$(".day-title-start-value").css("color","black");
+		$(".day-title-end-value").css("color","black");
+		
+
+		var startLat = $(day).find(".day-head .day-title-start-value-lat").first().val();
+		var startLng = $(day).find(".day-head .day-title-start-value-lng").first().val();
+		if (startLat && startLng && startLat != 0 && startLng != 0){
+			var start = new google.maps.LatLng(startLat, startLng);
+		}else{
+	    	var start = $(day).find(".day-head .day-title-start-value").first().val();
+		}
+
+    	var finish = "";
+    	
+		/**
+		 * Set start label for markers to A
+		 */
+    	labelIndex = 0;
+    	
+    	var waypoints = []; 
+    
+	    /**
+	     * If used for build whole route, skip map cleaning
+	     */    
+        if (wholeRoute == true){
+        	globalRouteBuild = true;
+        }else{
+        	globalRouteBuild = false;
+			cleanMap();
+        }
+
+        /**
+         * Draw routes for each spots in a day
+         */
+        var spotkey = 0;
+        
+        tripSteps[day.attr("id")] = spots.length + 1;
+        currentTripStep[day.attr("id")] = 0;
+        
+        // console.log(tripSteps);
+        // console.log(currentTripStep);
+        
+    	spots.each(function(){
+			
+			if (wholeRoute == true){
+				
+			}else{
+	    		currentColor = getRandomColor();
+			}
+			
+			if ($(this).find(".input-spot").val()){
+				
+				finish = $(this).find(".input-spot").val();
+				finishLng = $(this).find(".spot-place-lng").val();
+ 				finishtLat = $(this).find(".spot-place-lat").val();
+				if (finishtLat && finishLng && finishtLat != 0 && finishLng != 0){
+					finish = new google.maps.LatLng(finishtLat, finishLng);
+				}
+
+				// if (spotkey != spots.length-1){
+				addRoute(start, finish, waypoints, isAllowHighway, isAllowPaidRoads, $(day).attr("id"), $(this).find(".input-spot").parent().attr("id"), wholeRoute);
+				// }else{
+					// addRoute(start, finish, waypoints, isAllowHighway, isAllowPaidRoads, $(day).attr("id"), $(this).find(".input-spot").parent().attr("id"), false, true);
+				// }
+				
+				startLat = finishtLat;
+				startLng = finishLng;
+
+				start = finish;
+				if (startLat && startLng && startLat != 0 && startLng != 0){
+					start = new google.maps.LatLng(startLat, startLng);
+				}
+			}
+			
+			spotkey++;
+			    		
+    	});
+    	
+    	finishtLat = $(day).find(".day-head .day-title-end-value-lat").first().val();
+		finishLng = $(day).find(".day-head .day-title-end-value-lng").first().val();
+		if (finishtLat && finishLng){
+			finish = new google.maps.LatLng(finishtLat, finishLng);
+		}else{
+	    	finish = $(day).find(".day-head .day-title-end-value").first().val();
+		}
+
+		addRoute(start, finish, waypoints, isAllowHighway, isAllowPaidRoads, $(day).attr("id"), 'last', wholeRoute, true);
+				
+    	
+    	// if (start && finish){
+    		// var dayId = $(day).attr("id");
+    		// dayId = dayId.replace("day-", "");
+	    	// addRoute(start, finish, waypoints, false, false, dayId);
+    	// }
+    	
+    	
+    }
+    
+    var routeBounds = false;
+    var overlayWidth = 615; // Width of the overlay DIV
+	var leftMargin = 100; // Grace margin to avoid too close fits on the edge of the overlay
+	var rightMargin = 100; // Grace margin to avoid too close fits on the right and leave space for the controls
+    function offsetMap() {
+
+	    if (routeBounds !== false) {
+	
+	        // Clear listener defined in directions results
+	        google.maps.event.clearListeners(map, 'idle');
+	
+	        // Top right corner
+	        var topRightCorner = new google.maps.LatLng(map.getBounds().getNorthEast().lat(), map.getBounds().getNorthEast().lng());
+	
+	        // Top right point
+	        var topRightPoint = fromLatLngToPoint(topRightCorner).x;
+	
+	        // Get pixel position of leftmost and rightmost points
+	        var leftCoords = routeBounds.getSouthWest();
+	        var leftMost = fromLatLngToPoint(leftCoords).x;
+	        var rightMost = fromLatLngToPoint(routeBounds.getNorthEast()).x;
+	
+	        // Calculate left and right offsets
+	        var leftOffset = (overlayWidth - leftMost);
+	        var rightOffset = ((topRightPoint - rightMargin) - rightMost);
+	
+			// console.log(leftOffset);
+			// console.log(rightOffset);
+	
+	        // Only if left offset is needed
+	        if (leftOffset >= 0) {
+	
+	            if (leftOffset < rightOffset) {
+	
+	                var mapOffset = Math.round((rightOffset - leftOffset) / 2);
+	
+	                // Pan the map by the offset calculated on the x axis
+	                map.panBy(-mapOffset, 0);
+	
+	                // Get the new left point after pan
+	                var newLeftPoint = fromLatLngToPoint(leftCoords).x;
+	
+	                if (newLeftPoint <= overlayWidth) {
+	
+	                    // Leftmost point is still under the overlay
+	                    // Offset map again
+	                    offsetMap();
+	                }
+	
+	            } else {
+	
+	                // Cannot offset map at this zoom level otherwise both leftmost and rightmost points will not fit
+	                // Zoom out and offset map again
+	                map.setZoom(map.getZoom() - 1);
+	                offsetMap();
+	            }
+	        }
+	    }
+	}
+function fromLatLngToPoint(latLng) {
+
+    var scale = Math.pow(2, map.getZoom());
+    var nw = new google.maps.LatLng(map.getBounds().getNorthEast().lat(), map.getBounds().getSouthWest().lng());
+    var worldCoordinateNW = map.getProjection().fromLatLngToPoint(nw);
+    var worldCoordinate = map.getProjection().fromLatLngToPoint(latLng);
+
+    return new google.maps.Point(Math.floor((worldCoordinate.x - worldCoordinateNW.x) * scale), Math.floor((worldCoordinate.y - worldCoordinateNW.y) * scale));
+}
+    $( document ).tooltip();
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCgvK8IFeXkH2GjQtgIJAhrusUUPYVrOWY&libraries=places&callback=initAutocomplete" async defer></script>

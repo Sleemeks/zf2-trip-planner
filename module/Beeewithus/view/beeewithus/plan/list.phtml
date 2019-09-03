@@ -1,0 +1,49 @@
+<div class="trips-list">
+    <?php if (sizeof($this->list) == 0){ ?>
+        <div class="">You have no Trips saved. <a href="/plan">Create a new.</a></div>
+    <?php }else{ ?>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="10%">Journey Start Date</th>
+                    <th width="10%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+        <?php foreach ($this->list as $item){
+            ?>
+            <tr id="trip-line-<?php echo $item->id?>">
+            <?php if ($item->is_saved == 0){?>
+                <td>
+                    <a href="/plan">NOT SAVED</a><br />
+<!--                    Save with Name: <input type="text" value="--><?php //echo $item->title?><!--" class="day-name" id="name---><?php //echo $item->id?><!--">-->
+                </td>
+                <td>
+                    <a href="/plan/view/<?php echo $item->id?>"><?php if ($item->start_date){ echo date("d.m.Y", strtotime($item->start_date)); }?></a>
+                </td>
+                <td>
+                    <a href="/plan/view/<?php echo $item->id?>"><i class="fas fa-edit"></i></a>
+                    <a title="Print PDF" href="/plan/printView/<?php echo $item->id?>"><i class="fas fa-file-pdf"></i></a>
+                    <a class="delete-plan" title="Delete plan" id="delete-plan-<?php echo $item->id?>" href="javascript:void(0)"> <i class="fas fa-trash-alt"></i> </a>
+                </td>
+            <?php }else{?>
+                <td>
+                    <input type="text" value="<?php echo $item->title?>" class="day-name" id="name-<?php echo $item->id?>">
+                </td>
+                <td>
+                    <a href="/plan/view/<?php echo $item->id?>"><?php if ($item->start_date){ echo date("d.m.Y", strtotime($item->start_date)); }?></a>
+                </td>
+                <td>
+                    <a href="/plan/view/<?php echo $item->id?>"><i class="fas fa-edit"></i></a>
+                    <a title="Print PDF" href="/plan/printView/<?php echo $item->id?>"><i class="fas fa-file-pdf"></i></a>
+                    <a class="delete-plan" title="Delete plan" id="delete-plan-<?php echo $item->id?>" href="javascript:void(0)"> <i class="fas fa-trash-alt"></i> </a>
+                </td>
+            <?php } ?>
+            </tr>
+        <?php }?>
+            </tbody>
+        </table>
+        <button class="ui button" type="button">Save</button>
+    <?php } ?>
+</div>

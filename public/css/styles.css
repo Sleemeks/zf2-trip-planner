@@ -1,0 +1,1067 @@
+/* Mixin */
+/* line 1, scss/_core.scss */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-family: "Open Sans", sans-serif !important;
+}
+
+/* line 11, scss/_core.scss */
+.trips-list {
+  padding: 20px;
+}
+
+/* line 15, scss/_core.scss */
+.trips-list table tr td:last-child {
+  font-size: 16px;
+}
+/* line 17, scss/_core.scss */
+.trips-list table tr td:last-child a {
+  margin-left: 5px;
+}
+/* line 18, scss/_core.scss */
+.trips-list table tr td:last-child a:hover {
+  text-decoration: none;
+}
+/* line 22, scss/_core.scss */
+.trips-list table tr td:last-child a:first-child {
+  margin-left: 0px;
+}
+/* line 28, scss/_core.scss */
+.trips-list table tr td input {
+  width: 100%;
+}
+
+/* line 33, scss/_core.scss */
+.hidden {
+  display: none;
+}
+
+/* line 36, scss/_core.scss */
+.gm-style {
+  font-family: "PT Sans", Verdana, Arial, sans-serif !important;
+}
+
+/* line 39, scss/_core.scss */
+footer {
+  width: 100%;
+  height: 40px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* line 46, scss/_core.scss */
+.page {
+  height: 100%;
+  padding-top: 50px;
+}
+
+/* line 50, scss/_core.scss */
+button {
+  border-radius: 7px;
+}
+
+/* line 53, scss/_core.scss */
+#trip-planner-box {
+  width: 515px;
+  margin: 0 auto;
+  float: left;
+  height: 100%;
+}
+/* line 59, scss/_core.scss */
+#trip-planner-box span {
+  display: inline-block;
+  width: 60px;
+}
+/* line 64, scss/_core.scss */
+#trip-planner-box button {
+  font-size: 14px;
+  width: 505px;
+  margin: 10px;
+}
+
+/* line 70, scss/_core.scss */
+.btn-primary {
+  background-color: #0A96FB !important;
+}
+
+/* line 73, scss/_core.scss */
+.weekday {
+  font-size: 12px;
+  padding: 0 8px;
+}
+
+/* line 77, scss/_core.scss */
+.ui-tooltip {
+  padding: 3px 10px;
+  font-size: 11px;
+}
+
+/* line 81, scss/_core.scss */
+.day-head {
+  background-color: #0A96FB !important;
+  margin-bottom: 15px;
+  padding: 10px;
+  color: white;
+  height: 190px;
+}
+/* line 88, scss/_core.scss */
+.day-head .fa-calendar-alt {
+  margin-right: 10px;
+  font-size: 18px;
+}
+/* line 92, scss/_core.scss */
+.day-head .datepicker {
+  font-size: 12px;
+  padding: 1px 5px;
+}
+
+/* line 97, scss/_core.scss */
+.day {
+  background: white;
+  border-radius: 10px;
+  width: 505px;
+}
+
+/* line 103, scss/_core.scss */
+.fa {
+  font-size: 15px;
+}
+
+/* line 149, scss/_core.scss */
+.gm-style {
+  font-size: 15px !important;
+}
+
+/* line 152, scss/_core.scss */
+.day-icons {
+  width: 26px !important;
+  display: block !important;
+  float: right !important;
+  text-align: center !important;
+  cursor: pointer;
+  margin: 4px 0;
+}
+/* line 159, scss/_core.scss */
+.day-icons:hover {
+  color: #2a6496;
+}
+/* line 162, scss/_core.scss */
+.day-icons.delete-day-icon {
+  margin: 4px 0px 4px 6px;
+}
+
+/* line 166, scss/_core.scss */
+.day-start-finish-points-block {
+  float: left;
+  width: 72%;
+}
+
+/* line 171, scss/_core.scss */
+.day-route-calculations-block {
+  float: right;
+  width: 21%;
+  margin-top: 5px;
+}
+/* line 175, scss/_core.scss */
+.day-route-calculations-block .fa {
+  padding-right: 8px;
+  font-size: 16px;
+}
+/* line 178, scss/_core.scss */
+.day-route-calculations-block .fa.fa-stopwatch {
+  padding-right: 9px;
+  font-size: 17px;
+}
+/* line 183, scss/_core.scss */
+.day-route-calculations-block div {
+  height: 8px;
+}
+/* line 186, scss/_core.scss */
+.day-route-calculations-block input {
+  margin-right: 5px;
+  width: 52px;
+}
+/* line 190, scss/_core.scss */
+.day-route-calculations-block .km-label {
+  display: inline !important;
+  font-size: 10px;
+}
+
+/* line 195, scss/_core.scss */
+.day-title-start-value, .day-title-end-value {
+  width: 100%;
+  margin-top: 8px;
+  padding-left: 5px;
+  font-size: 12px;
+}
+
+/* line 201, scss/_core.scss */
+.spots-content {
+  padding: 0 25px;
+  color: #474747;
+}
+/* line 204, scss/_core.scss */
+.spots-content a {
+  color: #474747;
+}
+/* line 207, scss/_core.scss */
+.spots-content .fa {
+  width: 24px;
+  text-align: center;
+}
+/* line 211, scss/_core.scss */
+.spots-content input {
+  background: white;
+  border-bottom: 1px solid #474747 !important;
+  color: #474747;
+  width: 83%;
+  margin-right: 20px;
+}
+/* line 217, scss/_core.scss */
+.spots-content input::-webkit-input-placeholder {
+  color: #ccc;
+}
+/* line 221, scss/_core.scss */
+.spots-content input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #ccc;
+}
+/* line 225, scss/_core.scss */
+.spots-content input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #ccc;
+}
+/* line 229, scss/_core.scss */
+.spots-content input:-ms-input-placeholder {
+  color: #ccc;
+}
+/* line 233, scss/_core.scss */
+.spots-content .spot {
+  width: 90%;
+  height: 32px;
+}
+/* line 237, scss/_core.scss */
+.spots-content .spot-button {
+  float: right;
+  margin-top: 11px;
+}
+
+/* line 243, scss/_core.scss */
+.add-new-spot .fa {
+  color: #0A96FB;
+  font-size: 20px;
+}
+
+/* line 248, scss/_core.scss */
+.actions {
+  padding: 20px 0;
+}
+
+/* line 251, scss/_core.scss */
+.budget-popup {
+  display: none;
+  background: white;
+  z-index: 10;
+  padding: 10px;
+  width: 230px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+/* line 259, scss/_core.scss */
+.budget-popup input {
+  width: 40px;
+  background: white;
+  color: #474747;
+  border-bottom: 1px solid black !important;
+}
+/* line 265, scss/_core.scss */
+.budget-popup label {
+  color: #474747;
+  font-size: 12px;
+  width: 165px;
+}
+
+/* line 271, scss/_core.scss */
+.way-settings-block {
+  background: white;
+  padding: 10px 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #474747;
+}
+
+/* line 278, scss/_core.scss */
+.day-description {
+  margin: 15px 0;
+  width: 100%;
+  border: 0px;
+  resize: none;
+  font-size: 10px;
+  height: 46px;
+}
+
+/* line 289, scss/_core.scss */
+.budgets-list .budget {
+  width: 320px;
+}
+/* line 291, scss/_core.scss */
+.budgets-list .budget .budget-type {
+  float: left;
+}
+/* line 293, scss/_core.scss */
+.budgets-list .budget .budget-type .label {
+  float: left;
+  width: 64%;
+  padding: 2px 0px 3px;
+  margin-right: 6px;
+}
+/* line 298, scss/_core.scss */
+.budgets-list .budget .budget-type .label input {
+  width: 100%;
+  background: white;
+  color: black;
+  border-bottom: 1px solid black !important;
+}
+/* line 305, scss/_core.scss */
+.budgets-list .budget .budget-type .value {
+  float: left;
+  width: 30%;
+}
+/* line 308, scss/_core.scss */
+.budgets-list .budget .budget-type .value input {
+  width: 100%;
+}
+/* line 314, scss/_core.scss */
+.budgets-list button {
+  background: #0A96FB;
+  color: white;
+  width: 100%;
+  border-radius: 5px;
+  border: 0;
+}
+
+/* line 323, scss/_core.scss */
+.budget-totals-container {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  background: white;
+  padding: 10px;
+  border-radius: 5px 0 0 0;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  bottom: 0;
+}
+/* line 333, scss/_core.scss */
+.budget-totals-container .budget-toggle {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  float: right;
+  width: 50px;
+  outline: none;
+}
+/* line 340, scss/_core.scss */
+.budget-totals-container .budget-toggle:hover {
+  background-color: #0A96FB;
+}
+/* line 342, scss/_core.scss */
+.budget-totals-container .budget-toggle:hover i {
+  color: white;
+}
+/* line 346, scss/_core.scss */
+.budget-totals-container .budget-toggle i {
+  font-size: 18px;
+}
+
+/* line 352, scss/_core.scss */
+#new-day-action {
+  width: 505px;
+  text-align: center;
+}
+/* line 355, scss/_core.scss */
+#new-day-action .fa {
+  font-size: 25px;
+  color: #0A96FB;
+}
+
+/**
+ *   ===================
+ *   On/OFF Plugin
+ *   =================
+ */
+/* line 366, scss/_core.scss */
+.switch-button-label {
+  float: left;
+  font-size: 10pt;
+  cursor: pointer;
+}
+
+/* line 373, scss/_core.scss */
+.switch-button-label.off {
+  color: #adadad;
+}
+
+/* line 377, scss/_core.scss */
+.switch-button-label.on {
+  color: #0088CC;
+}
+
+/* line 381, scss/_core.scss */
+.switch-button-background {
+  float: left;
+  position: relative;
+  background: #ccc;
+  border: 1px solid #aaa;
+  margin: 1px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* line 397, scss/_core.scss */
+.switch-button-button {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  background: #FAFAFA;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+/* line 414, scss/_core.scss */
+#map {
+  height: 100%;
+}
+
+/* line 417, scss/_core.scss */
+.controls {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* line 427, scss/_core.scss */
+#input-start,
+#input-end {
+  background-color: #fff;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+/* line 437, scss/_core.scss */
+#input-start:focus,
+#input-end:focus {
+  border-color: #4d90fe;
+}
+
+/* line 441, scss/_core.scss */
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+/* line 446, scss/_core.scss */
+#type-selector label {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+/* line 450, scss/_core.scss */
+#target {
+  width: 345px;
+}
+
+/* line 453, scss/_core.scss */
+.day-title {
+  display: inline-block;
+  width: 30%;
+}
+
+/* line 458, scss/_core.scss */
+.bootstrap-timepicker {
+  display: inline-block;
+}
+
+/* line 462, scss/_core.scss */
+.zf-green {
+  color: #68b604;
+}
+
+/* line 466, scss/_core.scss */
+.btn-success {
+  background-color: #57a900;
+  background-image: -moz-linear-gradient(top, #70d900, #57a900);
+  background-image: -ms-linear-gradient(top, #70d900, #57a900);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+  background-image: -o-linear-gradient(top, #70d900, #57a900);
+  background-image: linear-gradient(top, #70d900, #57a900);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+/* line 476, scss/_core.scss */
+.input-spot {
+  width: 300px;
+}
+
+/* line 479, scss/_core.scss */
+.timepicker-end-time, .timepicker-start-time {
+  width: 40px;
+}
+
+/* line 483, scss/_core.scss */
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #57a900;
+}
+
+/* line 490, scss/_core.scss */
+.day-container {
+  height: 100%;
+}
+
+/* line 497, scss/_core.scss */
+.btn-success:active, .btn-success.active {
+  background-color: #57a900;
+}
+
+/* line 501, scss/_core.scss */
+div.container a.brand {
+  background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
+  margin-left: 0;
+  padding: 8px 20px 12px 40px;
+}
+
+/* NEW Google Maps styles */
+/* line 509, scss/_core.scss */
+#trip-planner-box ul {
+  padding: 0;
+}
+
+/* line 512, scss/_core.scss */
+#trip-planner-box li {
+  list-style: none;
+}
+
+/* line 515, scss/_core.scss */
+#trip-planner-box .not-active {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* NEW STYLES */
+/* line 522, scss/_core.scss */
+.button-bar:after {
+  display: block;
+  content: "";
+  clear: both;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* line 532, scss/_core.scss */
+.alert-absolute {
+  z-index: 923491556629;
+  float: right;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+/* line 540, scss/_core.scss */
+.navbar {
+  margin-bottom: 0 !important;
+  border-width: 0 !important;
+}
+
+/* line 545, scss/_core.scss */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/* line 556, scss/_core.scss */
+input {
+  height: 25px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  padding: 1px 5px;
+  font-size: 12px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+/* line 569, scss/_core.scss */
+td {
+  vertical-align: middle !important;
+}
+
+/* line 573, scss/_core.scss */
+input:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* line 580, scss/_core.scss */
+.close {
+  outline: 0 !important;
+}
+
+/* line 584, scss/_core.scss */
+.footer {
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* line 590, scss/_core.scss */
+.page-header {
+  border-bottom: none !important;
+}
+
+/* line 594, scss/_core.scss */
+.page-header + .page-header {
+  margin-top: 30px !important;
+}
+
+/* line 598, scss/_core.scss */
+.page-header h1, .page-header h2, .page-header h3 {
+  margin-bottom: 0 !important;
+}
+
+/* line 602, scss/_core.scss */
+.page-header .label h2 {
+  margin-top: 10px !important;
+  margin-bottom: 15px !important;
+}
+
+/* line 607, scss/_core.scss */
+.page-header div.label {
+  display: block;
+}
+
+/* line 611, scss/_core.scss */
+.page-header h1 .label {
+  padding: .35em 1em .5em 1em;
+  font-size: 40%;
+  font-weight: normal;
+  position: relative;
+  top: -.55em;
+}
+
+/* line 619, scss/_core.scss */
+.page-header h1 .label i {
+  margin-right: .3em;
+}
+
+/* line 623, scss/_core.scss */
+.navbar-nav a .btn {
+  border: 0 !important;
+  padding: 5px 15px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  display: block;
+}
+
+/* line 631, scss/_core.scss */
+.navbar-nav a .btn i {
+  margin-right: 5px;
+}
+
+/* line 635, scss/_core.scss */
+.navbar-right {
+  float: right;
+}
+
+/* line 639, scss/_core.scss */
+.navbar-header button.navbar-toggle {
+  outline: 0;
+}
+
+/* line 643, scss/_core.scss */
+.screenshot img {
+  width: auto;
+  max-width: 100%;
+}
+
+/* line 648, scss/_core.scss */
+.error-404 .jumbotron {
+  background: none;
+  text-align: center;
+}
+
+/* line 654, scss/_core.scss */
+.error-404 .jumbotron h1,
+.error-404 .jumbotron p {
+  margin-bottom: 30px;
+}
+
+/* line 659, scss/_core.scss */
+.button-bar {
+  margin-top: 40px;
+}
+
+/* line 662, scss/_core.scss */
+.button-bar button {
+  float: right;
+  margin-left: 20px;
+}
+
+/* line 666, scss/_core.scss */
+.button-bar .btn-link {
+  position: relative;
+  top: 8px;
+}
+
+/* line 670, scss/_core.scss */
+.btn i {
+  margin-right: 5px;
+}
+
+/* line 674, scss/_core.scss */
+.btn {
+  background-image: none !important;
+  color: #fff;
+  border: none !important;
+  text-shadow: none !important;
+}
+
+/* line 680, scss/_core.scss */
+.btn:focus {
+  outline: 0 !important;
+}
+
+/* line 684, scss/_core.scss */
+button.btn,
+.container a.btn {
+  padding: 7px 20px !important;
+}
+
+/* line 689, scss/_core.scss */
+button.btn-link {
+  padding: 0 5px !important;
+}
+
+/* line 694, scss/_core.scss */
+.btn-primary:hover {
+  color: #fff;
+  background-color: #5596cf !important;
+}
+
+/* line 699, scss/_core.scss */
+.navbar-inverse {
+  background-image: none !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000,endColorstr=#cc000000);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000,endColorstr=#cc000000);
+  zoom: 1;
+}
+
+/* line 707, scss/_core.scss */
+.trial-counter {
+  color: #f0ad4e !important;
+}
+
+/* line 711, scss/_core.scss */
+.trial-counter:hover {
+  color: #f4c480 !important;
+}
+
+/* line 715, scss/_core.scss */
+.trial-counter-false {
+  color: #ff6666 !important;
+}
+
+/* line 719, scss/_core.scss */
+.trial-counter-false:hover {
+  color: #fb7e7e !important;
+}
+
+/* line 723, scss/_core.scss */
+.btn-link {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* line 728, scss/_core.scss */
+.btn-success {
+  background-image: none !important;
+  background-color: #4ba84b !important;
+}
+
+/* line 733, scss/_core.scss */
+.btn-success:hover {
+  background-color: #5cb85c !important;
+}
+
+/* line 737, scss/_core.scss */
+.navbar-brand img {
+  margin: -11px 0 -6px 0;
+}
+
+/* line 741, scss/_core.scss */
+.navbar-brand {
+  font-weight: bold !important;
+  color: #fff !important;
+  font-size: 16px !important;
+}
+
+/* line 747, scss/_core.scss */
+.navbar-brand:first-letter {
+  display: inline-block !important;
+  text-transform: uppercase !important;
+}
+
+/* line 752, scss/_core.scss */
+.logo {
+  padding-right: 0;
+}
+
+/* line 756, scss/_core.scss */
+.logo + .navbar-brand {
+  padding-left: 10px;
+}
+
+/* line 760, scss/_core.scss */
+.login {
+  text-align: center;
+  max-width: 400px;
+  border: solid 1px #eee;
+  border-radius: 5px;
+  background: #f8f8f8;
+  padding: 40px 35px;
+  margin: 50px auto 0 auto;
+}
+
+/* line 769, scss/_core.scss */
+.login input {
+  width: 100%;
+  padding: 5px 110px 5px 10px;
+  box-sizing: border-box;
+}
+
+/* line 774, scss/_core.scss */
+.login label {
+  margin: 0 auto 10px auto;
+  display: block;
+  box-sizing: border-box;
+  width: 250px;
+  position: relative;
+}
+
+/* line 781, scss/_core.scss */
+.login .page-header {
+  margin-top: 0;
+  padding-bottom: 0 !important;
+}
+
+/* line 785, scss/_core.scss */
+.login .page-header h1 {
+  margin-top: 0;
+  padding-bottom: 10px !important;
+}
+
+/* line 789, scss/_core.scss */
+.login button {
+  width: 250px;
+}
+
+/* line 793, scss/_core.scss */
+.alert {
+  background-image: none !important;
+  border: none !important;
+  text-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* line 801, scss/_core.scss */
+.alert-danger a {
+  color: #ff6666;
+  text-decoration: underline;
+}
+
+/* line 806, scss/_core.scss */
+.alert-danger {
+  color: #ff6666 !important;
+  background: #ffe0e0 !important;
+}
+
+/* line 811, scss/_core.scss */
+.alert-danger a:hover,
+.alert-danger a:focus {
+  color: #cc615f;
+}
+
+/* line 816, scss/_core.scss */
+.message-box {
+  margin-top: 1px;
+  padding: 5px 0;
+}
+
+/* line 820, scss/_core.scss */
+.message-box i {
+  margin-right: 5px;
+}
+
+/* line 823, scss/_core.scss */
+.message-box ul {
+  padding-left: 15px;
+  padding-right: 15px;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+/* line 829, scss/_core.scss */
+.message-warning {
+  border-bottom: 1px solid #f7d6a6;
+  border-top: 1px solid #f7d6a6;
+  color: #f0ad4e;
+  background: #fcefdc;
+}
+
+/* line 835, scss/_core.scss */
+.message-warning a {
+  color: #f0ad4e !important;
+}
+
+/* line 839, scss/_core.scss */
+.message-error {
+  border-bottom: 1px solid #ffb2b2;
+  border-top: 1px solid #ffb2b2;
+  color: #ff6666;
+  background: #ffe0e0;
+}
+
+/* line 845, scss/_core.scss */
+.message-error a {
+  color: #ff6666 !important;
+}
+
+/* line 850, scss/_core.scss */
+input.error,
+textarea.error {
+  border: dashed 1px #ff6666;
+  background-color: #fff6f6;
+  color: #d02e2e;
+}
+
+/* line 857, scss/_core.scss */
+input.error:focus,
+textarea.error:focus {
+  border-color: #ff6666;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 102, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 102, 0.6);
+}
+
+/* line 865, scss/_core.scss */
+textarea {
+  resize: vertical;
+}
+
+/* line 869, scss/_core.scss */
+label.error {
+  color: #ff6666;
+  font-weight: normal;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+/* line 875, scss/_core.scss */
+label em {
+  color: #ff6666;
+}
+
+@media (max-width: 768px) {
+  /* line 880, scss/_core.scss */
+  .nav {
+    float: none;
+    text-align: center;
+  }
+}
+/* line 886, scss/_core.scss */
+#trip-planner-box .spot-start span, #trip-planner-box .spot-end span {
+  font-size: 12px;
+  width: 136px;
+}
+
+/* line 890, scss/_core.scss */
+.gm-style {
+  font-weight: 400;
+  text-decoration: none;
+}
+
+/* line 891, scss/_core.scss */
+.gm-style img {
+  max-width: none;
+}
+
+/* line 900, scss/_core.scss */
+.switch-button-label {
+  float: left;
+  font-size: 10pt;
+  cursor: pointer;
+}
+
+/* line 907, scss/_core.scss */
+.switch-button-label.off {
+  color: #adadad;
+}
+
+/* line 911, scss/_core.scss */
+.switch-button-label.on {
+  color: #0088CC;
+}
+
+/* line 915, scss/_core.scss */
+.switch-button-background {
+  float: left;
+  position: relative;
+  background: #ccc;
+  border: 1px solid #aaa;
+  margin: 1px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* line 931, scss/_core.scss */
+.switch-button-button {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  background: #FAFAFA;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}

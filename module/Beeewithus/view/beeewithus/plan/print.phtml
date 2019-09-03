@@ -1,0 +1,58 @@
+<br /><br /><br />
+<?php
+$plan = $this->plan;
+
+$budgets = array();
+$budgetTotals = array();
+foreach ($plan['budget'] as $budget){
+	$budgetTotals[$budget['id']]['title'] = $budget['title'];
+	$budgetTotals[$budget['id']]['amount'] = 0;
+	$budgets[$budget['id']] = $budget['title'];
+}
+?>
+<div>
+	<h1><?php echo $plan['plan']['title']; ?></h1>
+	<h2><?php echo $plan['plan']['start_date']; ?></h2>
+	<div>
+		<?php $i = 1; foreach ($plan['days'] as $day){?>
+			<h2>Day <?php echo $i;?></h2>
+			<?php echo $day['start_place']?> - <?php echo $day['finish_place']?><br />
+			Paid Roads: <?php echo $day['allow_pay_road']?> <br />
+			Highways: <?php echo $day['allow_highway']?> <br />
+			Bike Roads: <?php echo $day['use_bike']?> <br />
+			<br />
+			Start Time: <?php echo $day['start_time']?> <br />
+			Finish Time: <?php echo $day['finish_time']?> <br />
+			Time in the road: <?php echo $day['way_time']?> <br />
+			Total Distance: <?php echo $day['way_distance']?>km <br />
+			
+			<div>
+				<h3>Waypoints</h3>
+				<?php foreach ($day['spots'] as $spot){?>
+					<?php echo $spot['start_place']?> <br />
+					<?php echo $spot['comment']?> <br />
+					<hr />
+				<?php } ?>
+			</div>
+			<div>
+				<h3>Budget</h3>
+				<?php foreach ($day['budget'] as $budget){?>
+					<?php 
+					if (isset($budgets[$budget['type_id']])){
+						echo $budgets[$budget['type_id']]. ": ".$budget['amount'];
+						$budgetTotals[$budget['type_id']]['amount'] += $budget['amount'];
+					}?>
+					<br />
+				<?php } ?>
+			</div>
+			<hr> 
+		<?php $i++; }  ?>	
+	</div>
+	<div>
+		<h2>Budget Totals</h2>
+		<?php foreach ($budgetTotals as $budgetTotal){?>
+			<?php echo $budgetTotal['title']?>: <?php echo $budgetTotal['amount'] ?>
+			<br />
+		<?php } ?>
+	</div>
+</div>

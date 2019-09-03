@@ -1,0 +1,149 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic" type="text/css">
+        
+        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath('css/custom.css'))
+//                        ->prependStylesheet($this->basePath('css/font-awesome.min.css'))
+                        ->prependStylesheet($this->basePath('css/bootstrap-timepicker.min.css'))
+                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                        ->prependStylesheet($this->basePath('css/datepicker.css'))
+                        ->prependStylesheet($this->basePath('css/semantic/semantic.min.css'))
+            ?>
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/moment.min.js'))
+            ->prependFile($this->basePath('js/bootstrap-timepicker.min.js'))
+            ->prependFile($this->basePath('js/bootstrap-datepicker.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+			->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+        ; ?>
+        
+        <link rel="stylesheet" href="/css/jquery-ui.css" />
+        <link href="/css/styles.css" media="screen" rel="stylesheet" type="text/css">
+  
+		<script src="/js/jquery.form-validator.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/date.js"></script>
+        <script type="text/javascript" src="/js/jquery.switchButton.js"></script>
+        <script type="text/javascript" src="/js/main.js"></script>
+
+        <script type="text/javascript" src="/css/semantic/semantic.min.js"></script>
+
+    </head>
+    <body>
+    	<script>
+    	var PLAN_CONTROLLER_URL = "<?php echo $this->url("plan")?>";
+    	
+    	</script>
+    	<div class="page">
+    	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	            <div class="container">
+	                <div class="navbar-header">
+	                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	                        <span class="icon-bar"></span>
+	                        <span class="icon-bar"></span>
+	                        <span class="icon-bar"></span>
+	                    </button>
+	                    <!--<a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>-->
+	                </div>
+	                <div class="collapse navbar-collapse">
+	                    <ul class="nav navbar-nav">
+	                    	<?php if ($this->layout()->session->user_id){?>
+								<li><a href="#" id="logout-link"><?php echo $this->translate('Logout') ?></a></li>
+								<li><a href="/profile"><?php echo $this->translate('Trips List') ?></a></li>
+	                        	<li><a href="/profile/edit"><?php echo $this->translate('Profile') ?></a></li>
+	                        <?php }else{ ?>
+								<li><a href="#" class="login-link"><?php echo $this->translate('Login') ?></a></li>
+	                        <?php } ?>
+	                    </ul>
+	                </div>
+	            </div>
+	        </nav>
+
+            <?php echo $this->flashMessenger()->render("error");?>
+            <?php echo $this->flashMessenger()->render("success");?>
+            <?php echo $this->content; ?>
+	        
+	        <footer>
+	            <div class="footer">
+	                <p>&copy; <?php echo date('Y'); ?> Beeeplaner. <?php echo $this->translate('All rights reserved.') ?></p>
+	            </div>
+	        </footer>
+	    
+	        <?php echo $this->inlineScript() ?>
+	        
+	        <div id="login-form" title="Login">
+
+                <div class="ui message error" style="display: none;" id="login_error"></div>
+
+                <form id="loginForm" class="ui form">
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input data-validation="email" type="text" name="email" id="email" data-validation="email" value="">
+                    </div>
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" value="" data-validation="length" data-validation-length="min1" >
+                    </div>
+                    <button class="ui button" data-action="loginAction" type="submit">Login</button>
+                    <button class="ui button" data-action="createAccountAction" type="button">Create an account</button>
+                    <br>
+                    <a href="javascript:void(0)" data-action="forgotPasswordDialog">Forgot password?</a>
+                </form>
+
+			</div>
+			<div id="register-form" class="" title="Create an Account" style="display:none;">
+
+			  <div id="register-error" class="ui message error" style="display:none;"></div>
+
+			  <form id="registration" class="ui form">
+                  <div class="field">
+                      <label for="register-email">Email</label>
+                      <input data-validation="email" type="text" name="email" id="register-email" value="" class="text ui-widget-content ui-corner-all">
+                  </div>
+                  <div class="field">
+                      <label for="password">Password</label>
+                      <input name="pass_confirmation" id='register-password' type="password" data-validation="length" data-validation-length="min1">
+                  </div>
+                  <div class="field">
+                      <label for="password">Repeat Password</label>
+                      <input name="pass" type="password" id='register-password2'  data-validation="length confirmation" data-validation-length="min1">
+                  </div>
+                  <button class="ui button" data-action="registerAction" type="submit">Submit</button>
+                  <button class="ui button" data-action="backAction" type="button">Back</button>
+
+              </form>
+			</div>
+            <div id="forgot-password-form" class="" title="Forgot Password" style="display:none;">
+
+                <div id="forgot-message" class="ui message success" style="display:none;"></div>
+
+                <form id="forgot-password" class="ui form">
+                    <div class="field">
+                        <label for="forgot-email">Email</label>
+                        <input data-validation="email" type="text" name="email" id="forgot-email" value="" class="text ui-widget-content ui-corner-all">
+                    </div>
+                    <button class="ui button" data-action="resetPasswordAction" type="submit">Reset password</button>
+                    <button class="ui button" data-action="backAction" type="button">Back</button>
+                </form>
+            </div>
+		</div>
+    </body>
+</html>

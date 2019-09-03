@@ -1,0 +1,692 @@
+<div id="trip-planner-box">
+    <div class="start-end-box">
+        <ul>
+            <li>
+                <span>Start</span>
+                <input id="input-start" class="controls" type="text" value="Днепропетровская область, Украина" placeholder="Search first place">
+            </li>
+            <li>
+                <span>Finish</span>
+                <input id="input-end" class="controls" type="text" value="Frankfurt am Main" placeholder="Search second place">
+            </li>
+        </ul>
+        <button type="button" id="next-page" class="btn btn-xs btn-primary">Next page</button>
+    </div>
+</div>
+<div id="second-page-content" style="display:none;">
+    <div class="day-container template-holder">
+        <div class="day first-day">
+            <div class="day-head">
+                {icon} <div class="day-title">Start day</div>
+                    <input type="text" value="First day title">
+                    <input class="datepicker" data-date-format="dd/mm/yyyy">
+                {$}
+            </div>
+            <div class="day-content">
+                <div class="spot spot-start">
+                    {start icon}
+                    <input type="text" value="[[start_value]]" placeholder="spot">
+                    <div class="input-group bootstrap-timepicker">
+                        <input class="timepicker-start-time" class="form-control input-small" type="text" placeholder="start time">
+                    </div>
+                    {icon tooltip}<div class="tooltip">tooltip</div>
+                </div>
+            </div>
+            <div class="actions">
+                <a href="#" class="add-new-spot">add new spot</a>
+            </div>
+        </div>
+        <div class="day new-day"></div>
+        <div class="actions">
+            <a href="#" id="add-new-day">add new day</a>
+        </div>
+        <div class="day last-day">
+            <div class="day-head">
+                {icon} <div class="day-title">End day</div>
+                <input type="text" value="Last day title">
+                <input class="datepicker" data-date-format="dd/mm/yyyy">
+                {$}
+            </div>
+            <div class="day-content">
+                <div class="spot spot-end">
+                    <div class="input-group bootstrap-timepicker">
+                        <input class="timepicker-end-time" class="form-control input-small" type="text" placeholder="end time">
+                    </div>
+                    <input type="text" value="[[end_value]]" placeholder="spot">
+                    {end icon}
+                    {icon tooltip}<div class="tooltip">tooltip</div>
+                </div>
+            </div>
+            <div class="actions">
+                <a href="#" class="add-new-spot">add new spot</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map = '';
+    var planner_info = [];
+    var directionsService = '';
+    var directionsDisplay = '';
+    var waypts = [];
+    
+    /*
+     * Инициализация карты;
+     */
+    function initAutocomplete() {
+        planner_info = {};
+        map = '';
+        directionsService = '';
+        directionsDisplay = '';
+        
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 2,
+            center: {lat: 41.85, lng: -87.65},
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        directionsDisplay.setMap(map);
+
+        var inputStart = document.getElementById('input-start');
+        var inputEnd = document.getElementById('input-end');
+
+        var onChangeHandler = function() {
+            calculateAndDisplayRoute(directionsDisplay,inputStart,inputEnd);
+        };
+
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('trip-planner-box'));
+        var searchStart = new google.maps.places.SearchBox(inputStart);
+        var searchEnd = new google.maps.places.SearchBox(inputEnd);
+        searchStart.addListener('places_changed', onChangeHandler);
+        searchEnd.addListener('places_changed', onChangeHandler);
+    }
+    
+    /*
+     * Отображение подсчет и отображение пути на карте;
+     */
+    function calculateAndDisplayRoute(directionsDisplay,start_val,end_val) {
+        directionsService.route({
+            origin: document.getElementById('input-start').value,
+            destination: document.getElementById('input-end').value,
+            waypoints: [],
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                planner_info = {
+                    'first_day':{'start_spot':start_val.value,'departure_date':'','departure_time':''},
+                    'last_day':{'end_spot':end_val.value,'arrival_date':'','arrival_time':''}
+                }
+                
+                directionsDisplay.setDirections(response);
+                distanceMatrix(start_val.value,end_val.value);
+                next_page_click(start_val,end_val);
+            }
+        });
+    }
+    
+    /**
+     * Расчитывает расстаяние и время от первой точки к последней, записывает в массив;
+     */ 
+    function distanceMatrix(destinationA,destinationB) {
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix({
+            origins: [destinationA],
+            destinations: [destinationB],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, callback);
+        function callback(response, status) {
+            if (status == google.maps.DistanceMatrixStatus.OK) {
+                var origins = response.originAddresses;
+                var destinations = response.destinationAddresses;
+                for (var i = 0; i < origins.length; i++) {
+                    var results = response.rows[i].elements;
+                    for (var j = 0; j < results.length; j++) {
+                        var element = results[j];
+                        var distance = element.distance.value;
+                        var duration = element.duration.value;
+                        var from = origins[i];
+                        var to = destinations[j];
+                    }
+                }
+                planner_info.distance_info = {
+                    'distance':distance,
+                    'duration':duration
+                }
+            }
+        }
+    }
+    
+    /*
+     * Добавляет новое html после нажатия на "Next page";
+     */
+    function next_page_click(start_val,end_val) {
+        $('#next-page').click(function(){
+            
+            var secondPageContent = $('#second-page-content').html();
+            secondPageContent = secondPageContent.replace("[[start_value]]", start_val.value);
+            secondPageContent = secondPageContent.replace("[[end_value]]", end_val.value);
+            secondPageContent = secondPageContent.replace("template-holder","");
+            
+            $('.start-end-box').replaceWith(secondPageContent);
+            
+            if_change_datepicker_first_last_day();
+            if_change_timepicker_first_last_day();
+            add_new_spot_action_first_last_day();
+            
+            add_new_day();
+        });
+    }
+    
+    /*
+     * Если изменилась дата в первый или последний день;
+     */
+    function if_change_datepicker_first_last_day() {
+        $('.datepicker').datepicker().on('changeDate', function(ev){
+            var dateElement = ev.date.toString().split(" ");
+            $(this).parent().find('.weekday').remove();
+            $(this).after('<span class="weekday">'+dateElement[0]+'</span>');
+            var picker_parent = $(this).parent().parent();
+            
+            if(picker_parent.hasClass('first-day')) {
+                planner_info.first_day.departure_date = $(this).val();
+            } else if(picker_parent.hasClass('last-day')) {
+                planner_info.last_day.arrival_date = $(this).val();
+            }
+        });
+    }
+    /*
+     * Если изменилось время в первый или последний день;
+     */
+    function if_change_timepicker_first_last_day() {
+        $('.first-day .spot-start .timepicker-start-time').timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            planner_info.first_day.departure_time = e.time.value;
+        }).val('');
+        $('.last-day .spot-end .timepicker-end-time').timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            planner_info.last_day.arrival_time = e.time.value;
+        }).val('');
+    }
+    
+    /*
+     * Добавляет новый spot к текущему дню;
+     */
+    function add_new_spot_action_first_last_day() {
+        var spot_numb_firstday = 1;
+        var spot_numb_lastday = 1;
+        
+        $('.add-new-spot').click(function(event){
+            event.preventDefault();
+            var day = $(this).parent().parent()[0];
+            var parent = $(this).parent().parent();
+
+            if($(day).hasClass( "first-day" ) === true) {
+                spot_numb_firstday += 1;
+                var spot_numb = spot_numb_firstday;
+                parent.find('.day-content').append(add_html_spot("first-day",spot_numb_firstday));
+                
+                if(planner_info.first_day.spots) {
+                    planner_info.first_day.spots.push({spot_numb:'spot'+spot_numb_firstday});
+                } else {
+                    planner_info.first_day.spots = [{spot_numb:'spot'+spot_numb_firstday}];
+                }
+                
+                if_change_timepicker_first_last_day_spots('.first-day .spot'+spot_numb,'spot'+spot_numb,"first_day");
+                
+            } else if($(day).hasClass( "last-day" ) === true) {
+                spot_numb_lastday += 1;
+                
+                var spot_numb = $(day).find('.spot').length + 1;
+                
+                if(spot_numb > 2) {
+                    parent.find('.spot'+(spot_numb - 1)+'').after(add_html_spot("last-day",spot_numb));
+                } else {
+                    parent.find('.day-content').prepend(add_html_spot("last-day",spot_numb));
+                }
+                if(planner_info.last_day.spots) {
+                    planner_info.last_day.spots.push({spot_numb:'spot'+spot_numb});
+                } else {
+                    planner_info.last_day.spots = [{spot_numb:'spot'+spot_numb}];
+                }
+                
+                if_change_timepicker_first_last_day_spots('.last-day .spot'+spot_numb,'spot'+spot_numb,'last_day');
+            }
+            
+            var current_spot = parent.find('.spot'+spot_numb+' .input-spot');
+            spot_marker_action_first_last_day(current_spot[0],parent,spot_numb);
+            tooltipClick();
+        });
+    }
+    
+    /*
+     * HTML разметка spota;
+     */ 
+    function add_html_spot(current_day,spot_numb) {
+        if(current_day == "first-day") {
+            var html_delete = '<a href="#" onclick="deleteSpot_firstDay('+spot_numb+'); return false;">Delete spot</a>';
+        } else if(current_day == "last-day") {
+            var html_delete = '<a href="#" onclick="deleteSpot_lastDay('+spot_numb+'); return false;">Delete spot</a>';
+        } else {
+            var html_delete = '<a href="#" onclick="deleteSpot_newDay(\''+'spot'+spot_numb+'\',\''+current_day+'\'); return false;">Delete spot</a>';
+        }
+        
+        return '\
+            <div class="spot spot'+spot_numb+'">\
+                <div class="input-group bootstrap-timepicker">\
+                    <input class="timepicker-start-time" type="text" placeholder="start time">\
+                </div>\
+                <input type="text" placeholder="spot" class="input-spot">\
+                <div class="input-group bootstrap-timepicker">\
+                    <input class="timepicker-end-time" type="text" placeholder="end time">\
+                </div>\
+                '+ html_delete +'\
+            </div>\
+            ';
+    }
+    
+    /*
+     * Spot Action в текущем дне (местоположение остановки);
+     */
+    function spot_marker_action_first_last_day(spot,day,spot_numb) {
+        var searchBox = new google.maps.places.SearchBox(spot);
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
+            var thisday = day.attr('class').split(' ')[1];
+            
+            if(thisday == 'first-day') {
+                var count_spots = planner_info.first_day.spots.length;
+                for(var i=0;i<count_spots;i++) {
+                    var spot = planner_info.first_day.spots[i];
+                    if(spot['spot_numb'] == ('spot'+spot_numb)) {
+                        planner_info.first_day.spots[i].spot_value = places[0].formatted_address;
+                        break;
+                    }
+                }
+            } else if(thisday == 'last-day') {
+                var count_spots = planner_info.last_day.spots.length;
+                for(var i=0;i<count_spots;i++) {
+                    var spot = planner_info.last_day.spots[i];
+                    if(spot['spot_numb'] == ('spot'+spot_numb)) {
+                        planner_info.last_day.spots[i].spot_value = places[0].formatted_address;
+                        break;
+                    }
+                }
+            }
+            calculate_all_waypoints_on_map();
+        });
+    }
+    
+    /*
+     * Расчет всех waypoints;
+     */
+    function calculate_all_waypoints_on_map() {
+        waypts = []; // Clear waypoint array;
+        
+        // First day waypoints
+        var first_day_spots = planner_info.first_day.spots;
+        if(typeof first_day_spots !== 'undefined' && first_day_spots.length > 0) {
+            for(var i=0;i<first_day_spots.length;i++) {
+                if(typeof first_day_spots[i].spot_value !== 'undefined') {
+                    waypts.push({
+                        location: first_day_spots[i].spot_value,
+                        stopover: true
+                    });
+                }
+            }
+        }
+        // New days waypoints
+        var new_days = planner_info.new_days.day;
+        if(typeof new_days !== "undefined") {
+            for(var i=0;i<new_days.length;i++) {
+                var isset_spots = true;
+                try {
+                    new_days[i].spots.length
+                } catch(length) {
+                    isset_spots = false;
+                }
+                if(isset_spots) {
+                    for(var n=0;n<new_days[i].spots.length;n++) {
+                        if(typeof new_days[i].spots[n].spot_value !== "undefined") {
+                            waypts.push({
+                                location: new_days[i].spots[n].spot_value,
+                                stopover: true
+                            });
+
+                        }
+                    }
+                }
+            }
+        }
+        // Last day weypoints
+        var last_day_spots = planner_info.last_day.spots;
+        if (typeof last_day_spots !== "undefined" && last_day_spots.length > 0) {
+            if(planner_info.last_day.spots.length > 0) {
+                for(var i=0;i<planner_info.last_day.spots.length;i++) {
+                    if(typeof last_day_spots[i].spot_value !== "undefined") {
+                        waypts.push({
+                            location: planner_info.last_day.spots[i].spot_value,
+                            stopover: true
+                        });
+                    }
+                }
+            }
+        }
+        reload_waypoints();
+    }
+    
+    /*
+     * Функция самой перезагрузки карты с остановками;
+     */
+    function reload_waypoints() {
+        directionsService.route({
+            origin: planner_info.first_day.start_spot,
+            destination: planner_info.last_day.end_spot,
+            waypoints: waypts,
+            optimizeWaypoints: false,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            } else {
+                alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+    
+    /*
+     * Изменение времени (прибытия/отправления) у spota (first/last) day;
+     */
+    function if_change_timepicker_first_last_day_spots(spot_class,spot_numb,day) {
+        $(spot_class+' .timepicker-start-time').timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            for(var i=0;i<planner_info[day].spots.length;i++) {
+                if(planner_info[day].spots[i].spot_numb == spot_numb) {
+                    planner_info[day].spots[i].start_time = e.time.value;
+                    break;
+                }
+            }
+        }).val('');
+        $(spot_class+' .timepicker-end-time').timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            for(var i=0;i<planner_info[day].spots.length;i++) {
+                if(planner_info[day].spots[i].spot_numb == spot_numb) {
+                    planner_info[day].spots[i].end_time = e.time.value;
+                    break;
+                }
+            }
+        }).val('');
+    }
+    
+    /*
+     * Показать/скрыть выпадающее меню текущего Spot-a;
+     */
+    function tooltipClick() {
+        $('.tooltip-ellipsis').unbind( "click" );
+        $('.tooltip-ellipsis').click(function(e){
+            e.preventDefault();
+            $(this).parent().find(".spot-menu").toggleClass("display-none");
+        });
+    }
+    
+    /*
+     * Удаление Spota;
+     */
+    function deleteSpot_firstDay(spot_numb) {
+        deleteSpot_action(spot_numb,"first_day",".first-day");
+    }
+    function deleteSpot_lastDay(spot_numb) {
+        deleteSpot_action(spot_numb,"last_day",".last-day");
+    }
+    function deleteSpot_action(spot_numb,day_name,day_class) {
+        var deleted_index = "";
+        var stop = false;
+        for(var index in planner_info[day_name].spots) {
+            if(planner_info[day_name].spots[index].spot_numb == "spot"+spot_numb) {
+                $(day_class+" .spot"+spot_numb).remove();
+                delete planner_info[day_name].spots[index];
+                deleted_index = index;
+                stop = true;
+            }
+            if(stop && planner_info[day_name].spots.length == 1) {
+                delete planner_info[day_name].spots;
+            } else if(stop && planner_info[day_name].spots.length > 1) {
+                
+                var spot_index = deleted_index;
+                var spot_length = planner_info[day_name].spots.length - 1;
+                
+                $(planner_info[day_name].spots).each(function(index,value){
+                    if(index == spot_index) {
+                        planner_info[day_name].spots[index] = planner_info[day_name].spots[++spot_index];
+                        if(index == spot_length) {
+                            delete planner_info[day_name].spots[index];
+                            --planner_info[day_name].spots.length;
+                        }
+                    }
+                });
+            }
+            if(stop) {
+                calculate_all_waypoints_on_map();
+                break;
+            }
+        }
+    }
+    function deleteSpot_newDay(spot_numb,day_class) {
+        var deleted_spot_index = "";
+        var stop = false;
+        var day_info = planner_info.new_days.day;
+        for(var index in day_info) {
+            if(day_info[index].day_class == day_class) {
+                for(var spot_index in day_info[index].spots) {
+                    if(day_info[index].spots[spot_index].spot_numb == spot_numb) {
+                        $("."+day_class+" ."+spot_numb).remove();
+                        delete planner_info.new_days.day[index].spots[spot_index];
+                        deleted_spot_index = spot_index;
+                        stop = true;
+                    }
+                    if(stop && planner_info.new_days.day[index].spots.length == 1) {
+                        delete planner_info.new_days.day[index].spots;
+                    } else if(stop && planner_info.new_days.day[index].spots.length > 1) {
+
+                        var spot_length = planner_info.new_days.day[index].spots.length - 1;
+                        $(planner_info.new_days.day[index].spots).each(function(spot_index_new,value){                            
+                            if(spot_index_new == deleted_spot_index) {
+                                planner_info.new_days.day[index].spots[spot_index_new] = planner_info.new_days.day[index].spots[++deleted_spot_index];
+                                if(spot_index_new == spot_length) {
+                                    delete planner_info.new_days.day[index].spots[spot_index_new];
+                                    --planner_info.new_days.day[index].spots.length;
+                                }
+                            }
+                        });
+                    }
+                    if(stop) {
+                        calculate_all_waypoints_on_map();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    /*
+     * Добавление нового дня 
+     */
+    function add_new_day() {
+        
+        var count = 1;
+        planner_info.new_days = {};
+        $('.day-container:not(.template-holder) #add-new-day').click(function(event){
+            event.preventDefault();
+            count+=1;
+
+            if(planner_info.new_days.day) {
+                planner_info.new_days.day.push({day_class:'day'+count});
+            } else {
+                planner_info.new_days.day = [{day_class:'day'+count}];
+            }
+
+            var new_day_index = planner_info.new_days.day.length - 1;
+            planner_info.new_days.day[new_day_index].spots = [{spot_numb:"spot2"}];
+            
+            console.log(new_day_index);
+
+            $(".day.new-day").append('\
+                <div class="day'+count+' day-container">\
+                    <div class="day-head">\
+                        {icon} <div class="day-title">Day '+count+'</div>\
+                        <input type="text" value="Day '+count+'">\
+                        <input class="datepicker" data-date-format="dd/mm/yyyy">\
+                        {$}\
+                        <a href="#" onclick="deleteDay(this, '+new_day_index+',\'day'+count+'\'); return false;">Delete day</a>\
+                    </div>\
+                    <div class="day-content">\
+                        <div class="spot spot2">\
+                            <div class="input-group bootstrap-timepicker">\
+                                <input class="timepicker-start-time" type="text" placeholder="start time">\
+                            </div>\
+                            <input type="text" placeholder="spot" class="input-spot">\
+                            <div class="input-group bootstrap-timepicker">\
+                                <input class="timepicker-end-time" type="text" placeholder="end time">\
+                            </div>\
+                            <a href="#" onclick="deleteSpot_newDay(\'spot2\',\'day'+count+'\'); return false;">Delete spot</a>\
+                        </div>\
+                    </div>\
+                    <div class="actions">\
+                        <a href="#" class="add-new-spot">add new spot</a>\
+                    </div>\
+                </div>\
+            ');
+
+
+            if_change_datepicker_new_day(count);
+
+            var current_spot = $(".day"+count+" .spot2 .input-spot")[0];
+            var this_day = planner_info.new_days.day[new_day_index];
+            new_day_spot_marker_action(current_spot,spot_numb = 2,new_day_index,this_day);
+            tooltipClick();
+            
+            if_change_timepicker_new_day_spots("day"+count,"spot2");
+            
+            add_new_spot_to_new_day_action(new_day_index,this_day);
+        });
+    }
+    
+    /*  
+     * Если изменилась дата в новом дне;
+     */
+    function if_change_datepicker_new_day(day_number) {
+        $(".day"+day_number+" .datepicker").datepicker().on('changeDate', function(ev){
+            var weekday = ev.date.toString().split(" ")[0];
+            var current_day = $(this);
+            
+            $.grep(planner_info.new_days.day, function(value, index) {
+                if(value.day_class == "day"+day_number) {
+                    current_day.parent().find('.weekday').remove();
+                    current_day.after('<span class="weekday">'+weekday+'</span>');
+                    planner_info.new_days.day[index].departure_date = ev.target.value;
+                    return false;
+                }
+            });
+        });
+    }
+    
+    /*
+     * Spot Action в новом дне (местоположение остановки);
+     */
+    function new_day_spot_marker_action(spot,spot_numb,day_index,this_day) {
+        var searchBox = new google.maps.places.SearchBox(spot);
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
+            for(var i=0;i<this_day.spots.length;i++) {
+                if(this_day.spots[i]["spot_numb"] == ("spot"+spot_numb)) {
+                    planner_info.new_days.day[day_index].spots[i].spot_value = places[0].formatted_address;
+                    break;
+                }
+            }
+            calculate_all_waypoints_on_map();
+        });
+    }
+    
+    /*
+     * Добавляет новый spot к новому дню;
+     */
+    function add_new_spot_to_new_day_action(day_index,this_day) {
+        var spot_numb = 3;
+        $("."+this_day.day_class+" .add-new-spot").unbind( "click" );
+        $("."+this_day.day_class+" .add-new-spot").click(function(event){
+            event.preventDefault();
+            $("."+this_day.day_class).find(".day-content").append(add_html_spot(this_day.day_class,spot_numb));
+            
+            if(this_day.spots) {
+                planner_info.new_days.day[day_index].spots.push({spot_numb:"spot"+spot_numb});
+            } else {
+                planner_info.new_days.day[day_index].spots = [{spot_numb:'spot'+spot_numb}];
+            }
+            
+            if_change_timepicker_new_day_spots(this_day.day_class,"spot"+spot_numb);
+            
+            var current_spot = $("."+this_day.day_class).find('.spot'+spot_numb+' .input-spot')[0];
+            new_day_spot_marker_action(current_spot,spot_numb,day_index,this_day)
+            tooltipClick();
+            spot_numb++;
+        });
+    }
+    
+    /*
+     * Изменение времени (прибытия/отправления) у spota в  new_day;
+     */
+    function if_change_timepicker_new_day_spots(day_class,spot_numb) {
+        $("."+day_class+" ."+spot_numb+" .timepicker-start-time").timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            var day_info = planner_info.new_days.day;
+            for(var index in day_info) {
+                if(day_info[index].day_class == day_class) {
+                    for(var spot_index in day_info[index].spots) {
+                        if(day_info[index].spots[spot_index].spot_numb == spot_numb) {
+                            planner_info.new_days.day[index].spots[spot_index].start_time = e.time.value;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }).val('');
+        $("."+day_class+" ."+spot_numb+" .timepicker-end-time").timepicker({showMeridian:false}).on('changeTime.timepicker', function (e) {
+            var day_info = planner_info.new_days.day;
+            for(var index in day_info) {
+                if(day_info[index].day_class == day_class) {
+                    for(var spot_index in day_info[index].spots) {
+                        if(day_info[index].spots[spot_index].spot_numb == spot_numb) {
+                            planner_info.new_days.day[index].spots[spot_index].end_time = e.time.value;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }).val('');
+    }
+    
+    /*
+     * Удаление нового дня;
+     * IN DEVELOPMENT
+     */
+    function deleteDay(element, day_index,day_class) {
+        $(element).closest(".day-container").remove();
+    }
+    
+    
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDLIH9ZX0DF9pdku46ZTKRGHyhPoYfCjNo&libraries=places&callback=initAutocomplete" async defer></script>

@@ -1,0 +1,26 @@
+<div class="trips-list">
+<?php $user = $this->user; ?>
+<h2>Profile Edit</h2>
+
+    <form class="ui form" method="post">
+        <div class="field">
+            <label for="email">E-mail</label>
+            <input type="text" id="email" name="email" value="<?php echo $user['email'];?>"/>
+            <input type="hidden" id="email_orig" name="email_orig" value="<?php echo $user['email'];?>" />
+        </div>
+        <h3>Change Password</h3>
+        <div class="field">
+            <label for="password">Current Password</label>
+            <input type="password" id="current_pass" name="current_pass" value="" />
+        </div>
+        <div class="field">
+            <label for="password">New Password</label>
+            <input type="password" id="new_pass" name="new_pass" value="" />
+        </div>
+        <div class="field">
+            <label for="password">Confirm New Password</label>
+            <input type="password" id="new_pass_confirm" name="new_pass_confirm" value="" />
+        </div>
+        <button class="ui button" type="button" id="update_user_profile">Save</button>
+    </form>
+</div>
